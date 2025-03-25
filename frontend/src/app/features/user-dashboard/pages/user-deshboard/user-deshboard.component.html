@@ -1,23 +1,49 @@
-<header class="text-gray-600 body-font">
-  <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-    <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-      </svg>
-      <span class="ml-3 text-xl">Tailblocks</span>
-    </a>
-    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
-      <a class="mr-5 hover:text-gray-900">First Link</a>
-      <a class="mr-5 hover:text-gray-900">Second Link</a>
-      <a class="mr-5 hover:text-gray-900">Third Link</a>
-      <button class="mr-5 hover:text-gray-900">Fourth Link</button>
-    </nav>
-    <logout-button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Button
-      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
-        <path d="M5 12h14M12 5l7 7-7 7"></path>
-      </svg>
-    </logout-button>
+<div class="relative h-25 w-full">
+  <app-nevbar></app-nevbar>
+</div>
 
-    
+<div class=" px-24">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    @for (item of quizList; track $index) {
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold text-gray-700">Quiz {{ $index + 1 }}</h3>
+        </div>
+        <div class="text-gray-600">
+            <p><strong>{{ item.title }} </strong> </p>
+            <p><strong>Category:</strong> {{ item.categoryId }}</p>
+            <p><strong>Difficulty:</strong> {{ item.difficultyId }}</p>
+        </div>
+        <div class="mt-4">
+            <button (click)="deleteQuiz()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                play Quiz
+            </button>
+        </div>
+    </div>
+    }
   </div>
-</header>
+</div>
+  
+<!-- <div class="bg-white">
+  <div class="container mx-auto flex flex-wrap p-3 flex-col md:flex-row items-center">
+      <span class="text-gray-700 text-sm font-medium mr-2">Category:</span>
+      <select name="category" class="text-sm px-2 py-1 border rounded-md focus:outline-none focus:border-indigo-500 mr-2" required>
+          <option value="">Select</option>
+          <option value="math">Math</option>
+          <option value="science">Science</option>
+          <option value="history">History</option>
+      </select>
+
+      <span class="text-gray-700 text-sm font-medium mr-2">Difficulty:</span>
+      <select name="difficulty" class="text-sm px-2 py-1 border rounded-md focus:outline-none focus:border-indigo-500 mr-2" required>
+          <option value="">Select</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+      </select>
+
+      <button class="bg-indigo-500 text-sm font-medium text-white px-4 py-1 rounded-md hover:bg-indigo-600" (click)="fetchquiz()">Search</button>
+  </div>
+</div> -->
+
+
