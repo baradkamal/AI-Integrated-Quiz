@@ -1,0 +1,10 @@
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+    <input type="email" name="email" [(ngModel)]="loginobj.email" #email="ngModel" placeholder="enter email here"/>
+    <input type="password" name="password" [(ngModel)]="loginobj.password" #password="ngModel"placeholder="enter password here"/>
+    <button type="submit" [disabled]="form.invalid" class="">
+        Submit
+      </button>
+      <button type="submit"  routerLink="register">
+        register
+      </button>
+</form>

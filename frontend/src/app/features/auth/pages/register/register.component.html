@@ -1,0 +1,11 @@
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+    <input type="text" name="name" [(ngModel)]="RegisterObj.name" #name="ngModel" placeholder="Enter name here" />
+    <input type="email" name="email" [(ngModel)]="RegisterObj.email" #email="ngModel" placeholder="Enter email here" />
+    <input type="number" name="age" [(ngModel)]="RegisterObj.age" #age="ngModel" placeholder="Enter age here" />
+    <input type="text" name="username" [(ngModel)]="RegisterObj.username" #username="ngModel" placeholder="Enter username here" />
+    <input type="password" name="password" [(ngModel)]="RegisterObj.password" #password="ngModel" placeholder="Enter password here" />
+    <input type="password" name="confirmPassword" [(ngModel)]="RegisterObj.confirmPassword" #confirmPassword="ngModel" placeholder="Confirm password here" />
+    <button type="submit" [disabled]="form.invalid || !isPasswordMatch()">
+        Submit
+    </button>
+</form>
