@@ -6,6 +6,7 @@ import { RegisterComponent } from './features/auth/pages/register/register.compo
 
 export const routes: Routes = [
     {path:'', component:LoginComponent},
+    {path:'login', component:LoginComponent},
     {path:'deshboard', component:AdminDeshboardComponent},
     {path:'home', component:UserDeshboardComponent},
     {path:'register', component:RegisterComponent},

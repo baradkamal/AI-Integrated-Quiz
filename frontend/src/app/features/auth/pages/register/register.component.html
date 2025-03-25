@@ -1,11 +1,32 @@
-<form #form="ngForm" (ngSubmit)="onSubmit()">
-    <input type="text" name="name" [(ngModel)]="RegisterObj.name" #name="ngModel" placeholder="Enter name here" />
-    <input type="email" name="email" [(ngModel)]="RegisterObj.email" #email="ngModel" placeholder="Enter email here" />
-    <input type="number" name="age" [(ngModel)]="RegisterObj.age" #age="ngModel" placeholder="Enter age here" />
-    <input type="text" name="username" [(ngModel)]="RegisterObj.username" #username="ngModel" placeholder="Enter username here" />
-    <input type="password" name="password" [(ngModel)]="RegisterObj.password" #password="ngModel" placeholder="Enter password here" />
-    <input type="password" name="confirmPassword" [(ngModel)]="RegisterObj.confirmPassword" #confirmPassword="ngModel" placeholder="Confirm password here" />
-    <button type="submit" [disabled]="form.invalid || !isPasswordMatch()">
-        Submit
-    </button>
-</form>
+<div class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+        <h2 class="text-2xl font-semibold text-gray-700 text-center">Register</h2>
+        <form #form="ngForm" (ngSubmit)="onSubmit()" class="mt-4">
+            <div class="mb-4">
+                <label class="block text-gray-600 text-sm mb-2">Name</label>
+                <input type="text" name="name" [(ngModel)]="RegisterObj.name" #name="ngModel" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Enter name here" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-600 text-sm mb-2">Email</label>
+                <input type="email" name="email" [(ngModel)]="RegisterObj.email" #email="ngModel" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Enter email here" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-600 text-sm mb-2">Age</label>
+                <input type="number" name="age" [(ngModel)]="RegisterObj.age" #age="ngModel" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Enter age here" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-600 text-sm mb-2">Username</label>
+                <input type="text" name="username" [(ngModel)]="RegisterObj.username" #username="ngModel" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Enter username here" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-600 text-sm mb-2">Password</label>
+                <input type="password" name="password" [(ngModel)]="RegisterObj.password" #password="ngModel" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Enter password here" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-600 text-sm mb-2">Confirm Password</label>
+                <input type="password" name="confirmPassword" [(ngModel)]="RegisterObj.confirmPassword" #confirmPassword="ngModel" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-indigo-500" placeholder="Confirm password here" required>
+            </div>
+            <button type="submit" [disabled]="form.invalid || !isPasswordMatch()" class="w-full bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-600">Register</button>
+        </form>
+    </div>
+</div>

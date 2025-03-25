@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -40,7 +40,7 @@ export class RegisterComponent {
 
       this.auth.register(dataToSend).subscribe({
         next: (res) => {
-          this.router.navigateByUrl("");
+          this.router.navigate(['/login']);
         }
         ,error: (error) =>{
           console.log('register Failed: ',error);
