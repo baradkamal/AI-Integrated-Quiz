@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { QuizServiceService } from '../../../../core/services/quiz-service.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { HttpClient } from '@angular/common/http';
+import { PlayQuizComponentComponent } from "../../components/play-quiz-component/play-quiz-component.component";
+
 
 @Component({
   selector: 'app-user-deshboard',
-  imports: [NevbarComponent,FormsModule],
+  imports: [NevbarComponent, FormsModule, PlayQuizComponentComponent],
   templateUrl: './user-deshboard.component.html',
   styleUrl: './user-deshboard.component.css'
 })
@@ -17,6 +19,7 @@ export class UserDeshboardComponent {
   selectedQuestionIds: number[] = [];
   selectedQuiz: any = null; 
   createdBy: any = null;
+  
 
 
 
@@ -70,5 +73,10 @@ export class UserDeshboardComponent {
     });
   }
 
-  deleteQuiz(){}
+  playQuiz(quiz: any) {
+    this.selectedQuiz = quiz; 
+  }
+  closeQuiz(){
+    this.selectedQuiz = null;
+  }
 }

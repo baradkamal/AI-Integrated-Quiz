@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { LogoutService } from '../../../core/services/logout.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'logout-button',
@@ -9,10 +10,12 @@ import { LogoutService } from '../../../core/services/logout.service';
 })
 export class LogoutButtonComponent {
 
-  constructor(private logoutService: LogoutService) {}
+  constructor(private router: Router) {}
 
   onLogoff() {
-    
-    this.logoutService.onLogoff();
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('user_id');
+    this.router.navigateByUrl("login");
   }
 }

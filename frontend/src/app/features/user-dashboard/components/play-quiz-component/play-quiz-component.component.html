@@ -1,0 +1,34 @@
+<div class="quiz-modal">
+  <h2>{{ quizData.title }}</h2>
+  <p><strong>Category:</strong> {{ quizData.categoryId }}</p>
+  <p><strong>Difficulty:</strong> {{ quizData.difficultyId }}</p>
+  
+  <div *ngIf="!showResult">
+    <!-- <p><strong>Time Left:</strong> {{ timeLeft }}s</p> -->
+    <p><strong>Question {{ currentQuestionIndex + 1 }}:</strong></p>
+    <p>{{ quizData.questions[currentQuestionIndex].question }}</p>
+    
+    <div>
+      @for (option of getCurrentOptions(); track option.id) {
+        <label class="option-label">
+          <input 
+            type="radio" 
+            [name]="'question-' + currentQuestionIndex" 
+            [value]="option.text"
+            [checked]="selectedAnswers[currentQuestionIndex] === option.text"
+            (change)="selectAnswer(option.text)"
+          />
+          {{ option.text }}
+        </label>
+      }
+    </div>
+    
+    <button (click)="nextQuestion()" [disabled]="!selectedAnswers[currentQuestionIndex]">Next</button>
+  </div>
+  
+  <div *ngIf="showResult">
+    <h3>Your Score: {{ score }} / {{ quizData.questions.length }}</h3>
+    <button (click)="restartQuiz()">Restart</button>
+    <button (click)="close()">Close</button>
+  </div>
+</div>
