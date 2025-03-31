@@ -1,0 +1,73 @@
+<div class="mb-8">
+  <h1 class="text-3xl font-bold text-gray-900">Leaderboard</h1>
+  <p class="mt-2 text-gray-600">Track your progress and continue </p>
+</div>
+<div class="leaderboard-container p-4">
+  <div *ngIf="loading" class="text-center">
+    <p>Loading leaderboards...</p>
+  </div>
+
+  <div *ngIf="error" class="text-center text-red-500">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="quiz-leaderboard bg-white rounded-lg shadow p-4">
+      <h2 class="text-xl font-bold mb-4">Quiz Leaderboard</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="px-4 py-2">Rank</th>
+              <th class="px-4 py-2">User</th>
+              <th class="px-4 py-2">Score</th>
+              <th class="px-4 py-2">Completed At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of quizLeaderboard; let i = index" 
+                [class.bg-gray-50]="i % 2 === 0"
+                [class.bg-blue-100]="isCurrentUser(user.user)"
+                [class.font-bold]="isCurrentUser(user.user)">
+              <td class="px-4 py-2 text-center">{{ i + 1 }}</td>
+              <td class="px-4 py-2">
+                {{ user.userName }}
+                <span *ngIf="isCurrentUser(user.user)" class="ml-2 text-blue-600">(You)</span>
+              </td>
+              <td class="px-4 py-2 text-center">{{ user.totalScore }}</td>
+              <td class="px-4 py-2">{{ user.completedAt | date:'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="overall-leaderboard bg-white rounded-lg shadow p-4">
+      <h2 class="text-xl font-bold mb-4">Overall Leaderboard</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="px-4 py-2">Rank</th>
+              <th class="px-4 py-2">User</th>
+              <th class="px-4 py-2">Average Score (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of overallLeaderboard; let i = index"
+                [class.bg-gray-50]="i % 2 === 0"
+                [class.bg-blue-100]="isCurrentUser(user.user)"
+                [class.font-bold]="isCurrentUser(user.user)">
+              <td class="px-4 py-2 text-center">{{ i + 1 }}</td>
+              <td class="px-4 py-2">
+                {{ user.userName }}
+                <span *ngIf="isCurrentUser(user.user)" class="ml-2 text-blue-600">(You)</span>
+              </td>
+              <td class="px-4 py-2 text-center">{{ user.percentage | number:'1.2-2' }}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

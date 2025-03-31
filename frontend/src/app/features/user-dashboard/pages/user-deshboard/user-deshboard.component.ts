@@ -9,7 +9,7 @@ import { PlayQuizComponentComponent } from "../../components/play-quiz-component
 
 @Component({
   selector: 'app-user-deshboard',
-  imports: [NevbarComponent, FormsModule, PlayQuizComponentComponent],
+  imports: [FormsModule, PlayQuizComponentComponent],
   templateUrl: './user-deshboard.component.html',
   styleUrl: './user-deshboard.component.css'
 })

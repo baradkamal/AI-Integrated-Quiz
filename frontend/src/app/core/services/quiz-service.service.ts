@@ -9,11 +9,21 @@ import { Quiz } from '../../interfaces/quiz';
 })
 export class QuizServiceService {
   private getquizurl = 'http://localhost:3000/api/quiz';
-
+  private getquizbyid = 'http://localhost:3000/api/quizbyid';
+  private getquizbyids = 'http://localhost:3000/api/quizbyids';
+  
   constructor(private http: HttpClient) { }
 
   fetchQuizzes(): Observable<Quiz[]> {
     return this.http.get<Quiz[]>(this.getquizurl);
+  }
+
+  fetchquizbyid(id: any): Observable<Quiz> {
+    return this.http.get<Quiz>(this.getquizbyid+ '/'+id);
+  }
+
+  fetchquizbyids(quizIds: any): Observable<any[]> {
+    return this.http.post<any[]>(this.getquizbyids, { quizIds });
   }
 
   saveQuiz(quiz:Quiz): Observable<Quiz> {

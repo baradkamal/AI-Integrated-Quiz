@@ -3,7 +3,6 @@ const UserResponse = require("../models/UserResponse");
 
 exports.getUserResponse = async (req, res) => {
     try{
-        
         const userresponse = await UserResponse.find();
         res.json(userresponse);
     } catch (error){
@@ -11,8 +10,22 @@ exports.getUserResponse = async (req, res) => {
     }
 }
 
+exports.userResponseByuser = async (req, res) =>{
+    try{
+        const { id } = req.params;
+        const userresponse = await UserResponse.find({user: id});
+
+        if (!userresponse || userresponse.length === 0) {
+            return res.status(404).json({ message: "No user response found" });
+        }
+        return res.status(200).json(userresponse);
+    } catch (error){
+        res.status(500).json({message: error.message});
+    }
+}
+
 exports.createUserResponse = async (req, res) => {
-    console.log("Incoming request body:", req.body); // Log the incoming request body
+   // console.log("Incoming request body:", req.body); 
 
     const { user, quiz, responses, totalScore } = req.body;
   

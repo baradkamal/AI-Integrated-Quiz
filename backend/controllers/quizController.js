@@ -21,6 +21,41 @@ exports.getQuiz = async (req, res) => {
     }
 };
 
+exports.getQuizbyid = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const quiz = await Quiz.findById(id);
+        if(!quiz) {
+            return res.status(404).json({ message: 'Quiz not found' });
+        }
+        res.json(quiz);
+    }catch (error){
+        res.status(500).json({ message: error.message});
+    }
+};
+
+exports.getQuizzesByIds = async (req, res) => {
+    try {
+        const { quizIds } = req.body; 
+
+        if (!quizIds || !Array.isArray(quizIds) || quizIds.length === 0) {
+            return res.status(400).json({ message: 'Invalid or missing quiz IDs' });
+        }
+
+        
+        const quizzes = await Quiz.find({ _id: { $in: quizIds } });
+
+        if (!quizzes.length) {
+            return res.status(404).json({ message: 'No quizzes found' });
+        }
+
+        res.json(quizzes);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 exports.deleteQuiz = async (req, res) => {
     try { 
         const { id } = req.params;

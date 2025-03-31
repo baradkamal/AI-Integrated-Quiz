@@ -1,13 +1,13 @@
 import { Component, ElementRef, HostListener, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { UserServiceService } from '../../../core/services/user-service.service';
 import { CommonModule } from '@angular/common';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { error } from 'console';
 
 @Component({
   selector: 'app-nevbar',
-  imports: [CommonModule,RouterOutlet],
+  imports: [CommonModule,RouterOutlet, RouterLink],
   templateUrl: './nevbar.component.html',
   styleUrl: './nevbar.component.css'
 })

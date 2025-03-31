@@ -5,13 +5,36 @@ import { LoginComponent } from './features/auth/pages/login/login.component';
 import { RegisterComponent } from './features/auth/pages/register/register.component';
 import { PlayQuizComponentComponent } from './features/user-dashboard/components/play-quiz-component/play-quiz-component.component';
 import { MyQuizzesComponent } from './features/user-dashboard/pages/my-quizzes/my-quizzes.component';
+import { UserLayoutComponent } from './layouts/user/user-layout/user-layout.component';
+import { AdminLayoutComponent } from './layouts/admin/admin-layout/admin-layout.component';
+import { LeaderboardComponent } from './features/user-dashboard/pages/leaderboard/leaderboard.component';
+import { UserProfileComponent } from './features/user-dashboard/components/user-profile/user-profile.component';
+import { authGuard } from './core/guards/auth.guard';
+import { ManageUsersComponent } from './features/admin-dashboard/components/manage-users/manage-users.component';
+import { ManageQuizzesComponent } from './features/admin-dashboard/components/manage-quizzes/manage-quizzes.component';
+import { AnalyticsComponent } from './features/admin-dashboard/components/analytics/analytics.component';
 
 export const routes: Routes = [
+    {path:'', component:UserLayoutComponent,canActivate: [authGuard],
+        children: [
+            {path:'home', component:UserDeshboardComponent},
+            {path:'playquiz', component:PlayQuizComponentComponent},
+            {path:'myquizzes', component:MyQuizzesComponent},
+            {path:'leaderboard', component:LeaderboardComponent},
+            {path:'profile', component:UserProfileComponent},
+        ],
+    },
+    {path:'', component:AdminLayoutComponent,canActivate: [authGuard],
+        children: [
+            {path:'deshboard', component:AdminDeshboardComponent},
+            {path:'user-management', component:ManageUsersComponent},
+            {path:'manage-quizzes', component:ManageQuizzesComponent},
+            {path:'analytics', component:AnalyticsComponent},
+        ],
+    },
     {path:'', component:LoginComponent},
     {path:'login', component:LoginComponent},
-    {path:'deshboard', component:AdminDeshboardComponent},
-    {path:'home', component:UserDeshboardComponent},
     {path:'register', component:RegisterComponent},
-    {path:'playquiz', component:PlayQuizComponentComponent},
-    {path:'myquizzes', component:MyQuizzesComponent},
+    
+    
 ];

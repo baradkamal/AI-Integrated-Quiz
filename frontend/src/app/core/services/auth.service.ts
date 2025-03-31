@@ -29,6 +29,17 @@ export class AuthService {
     localStorage.setItem('authToken', token);
   }
 
+  logout() {
+    localStorage.removeItem('token'); // Remove token on logout
+    // this.router.navigate(['/login']); // Redirect to login
+  } 
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token'); 
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token'); 
+  }
 setId(id: any){
   this.user_id.set(id);
   localStorage.setItem('user_id', id);
@@ -38,4 +49,6 @@ setEmail(email: any){
   this.user_email.set(email);
   localStorage.setItem('user_email', email);
 }
+
+
 }
