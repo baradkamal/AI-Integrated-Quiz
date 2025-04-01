@@ -7,6 +7,7 @@ const userRoutes = require("./routes/userRoutes");
 const questionRoutes = require("./routes/questionRoutes");
 const quizRoutes = require("./routes/quizRoutes");
 const userResponseroutes = require("./routes/userResponseRoutes");
+const category = require("./routes/categoryRoutes");
 const errorHandler = require("./middlewares/errorMiddleware");
 const cors = require("cors");
 
@@ -29,6 +30,8 @@ app.use("/api", userRoutes);
 app.use("/api", questionRoutes);
 app.use("/api",quizRoutes);
 app.use("/api", userResponseroutes);
+app.use("/api", category);
+
 
 
 app.use(errorHandler);

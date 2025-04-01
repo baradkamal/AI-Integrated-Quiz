@@ -10,6 +10,24 @@ exports.getUserResponse = async (req, res) => {
     }
 }
 
+exports.getUserResponses2 = async (req, res) => {
+    try {
+        const responses = await UserResponse.find()
+            .populate("user", "name email -_id")  
+            .populate("quiz", "title -_id")       
+            .populate("responses.question", "question correct_answer -_id") 
+            .select('-_id responses totalScore completedAt status'); 
+
+        res.json(responses); 
+    } catch (error) {
+        console.error("Error fetching user responses:", error);
+        res.status(500).json({ error: "Server Error" }); 
+    }
+};
+
+
+  
+
 exports.userResponseByuser = async (req, res) =>{
     try{
         const { id } = req.params;

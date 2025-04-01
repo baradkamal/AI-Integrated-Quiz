@@ -1,4 +1,97 @@
-<div class="max-w-7xl mx-auto">
+<!-- Admin Action Panel -->
+<div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+  <h2 class="text-xl font-bold text-gray-900 mb-4">Admin Controls</h2>
+  <div class="flex flex-wrap gap-3">
+    <button (click)="openDialog('Create Quiz')" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors flex items-center">
+      <i class="ri-add-line mr-2"></i>
+      Create Quiz
+    </button>
+    <button (click)="openDialog('Manage Users')" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center">
+      <i class="ri-user-settings-line mr-2"></i>
+      Manage Users
+    </button>
+    <button (click)="openDialog('Manage Role')" class="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition-colors flex items-center">
+      <i class="ri-shield-user-line mr-2"></i>
+      Manage Role
+    </button>
+  </div>
+</div>
+
+<!-- Reusable Dialog -->
+<app-custom-popup *ngIf="isDialogOpen" [title]="dialogTitle" width="w-120" (close)="closeDialog($event)">
+  <!-- Dynamic Content: Form for Creating a Quiz -->
+  <form *ngIf="dialogTitle === 'Create Quiz'" class="space-y-4">
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Quiz Title</label>
+      <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter quiz title">
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+      <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" rows="3" placeholder="Enter quiz description"></textarea>
+    </div>
+    
+    
+  </form>
+    
+  <!-- Dynamic Content: Form for Managing Users -->
+  <form *ngIf="dialogTitle === 'Manage Users'" class="space-y-4">
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">User Name</label>
+      <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter user name">
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+      <input type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter email address">
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+      <div class="flex space-x-4">
+        <label class="inline-flex items-center">
+          <input type="radio" name="status" class="text-indigo-600 focus:ring-indigo-500" checked>
+          <span class="ml-2">Active</span>
+        </label>
+        <label class="inline-flex items-center">
+          <input type="radio" name="status" class="text-indigo-600 focus:ring-indigo-500">
+          <span class="ml-2">Inactive</span>
+        </label>
+      </div>
+    </div>
+    
+  </form>
+  
+  <!-- Dynamic Content: Form for Managing Roles -->
+  <form *ngIf="dialogTitle === 'Manage Role'" class="space-y-4">
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Role Name</label>
+      <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Enter role name">
+    </div>
+    
+    <div class="mt-4">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Access Modules</label>
+      <div class="space-y-2">
+        <label class="flex items-center">
+          <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="ml-2">Dashboard Access</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="ml-2">Quiz Management</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="ml-2">User Management</span>
+        </label>
+        <label class="flex items-center">
+          <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500">
+          <span class="ml-2">Reports & Analytics</span>
+        </label>
+      </div>
+    </div>
+    
+  </form>
+</app-custom-popup>
+
+<!-- <div class="max-w-7xl mx-auto">
     <div class="mb-6 flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-semibold text-gray-900">
@@ -171,4 +264,4 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
