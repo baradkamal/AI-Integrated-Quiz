@@ -1,1 +1,306 @@
-<p>manage-quizzes works!</p>
+<div>
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-semibold text-gray-900">Manage Quizzes</h1>
+                    <p class="mt-1 text-sm text-gray-500">
+                        Create, edit and manage your quizzes
+                    </p>
+                </div>
+                <button routerLink="/createnewquiz"
+                    class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white  hover:bg-indigo-700 whitespace-nowrap cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Create New Quiz
+                </button>
+            </div>
+            <div class="bg-white rounded shadow-sm overflow-hidden">
+                <!-- Quiz list table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Quiz Title
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Category
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Difficulty
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Questions
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created
+                                </th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr *ngIf="quizList.length === 0">
+                                <td colspan="5" class="px-6 py-4 text-sm text-gray-500 text-center">
+                                    No quizzes found
+                                </td>
+                            </tr>
+                            <tr *ngFor="let quiz of quizList">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                    {{ quiz.title }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{ quiz.category.name }}
+                                </td>
+                                
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{ quiz.difficulty.name }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-center text-gray-500">
+                                    {{ quiz.questions.length }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{ quiz.status }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{ quiz.createdAt | date: 'mediumDate' }}
+                                </td>
+                                <td class="px-6 py-4 text-sm ">
+                                    <a class="text-blue-600 hover:text-blue-900 mr-2">
+                                        <i class="ri-eye-line"></i>
+                                    </a>
+                                    <a class="text-gray-600 mr-2 hover:text-gray-900" onclick="editQuiz()">
+                                        <i class="ri-edit-line"></i>
+                                    </a>
+                                    <a class="text-red-600 hover:text-red-900" onclick="deleteQuiz()">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination controls -->
+                <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        <button
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
+                            Previous
+                        </button>
+                        <button
+                            class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
+                            Next
+                        </button>
+                    </div>
+
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                Showing
+                                <span class="font-medium">{{ (page - 1) * limit + 1 }}</span> to
+                                <span class="font-medium">{{
+                                    page * limit > totalCount ? totalCount : page * limit
+                                    }}</span>
+                                of <span class="font-medium">{{ totalCount }}</span> results
+                            </p>
+                        </div>
+                        <div>
+                            <div class="relative inline-flex pr-2">
+                                <div>
+                                    <label for="limit-select" class="text-sm  text-gray-700">Items per page:</label>
+                                    <select title="Items per page" #limitSelect
+                                        (change)="changeLimit(limitSelect.value)" [value]="limit"
+                                        class="ml-2 p-2 border border-gray-300 text-sm rounded-md bg-white">
+                                        <option [value]="1">1</option>
+                                        <option [value]="10">10</option>
+                                        <option [value]="25">25</option>
+                                        <option [value]="50">50</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                                <!-- Previous page button -->
+                                <button [disabled]="page === 1" (click)="previousPage()"
+                                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium"
+                                    [ngClass]="
+                    page === 1
+                      ? 'text-gray-300 cursor-not-allowed'
+                      : 'text-gray-500 hover:bg-gray-50'
+                  ">
+                                    &lt;
+                                </button>
+
+                                <!-- First page button -->
+                                <button (click)="goToPage(1)"
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium"
+                                    [ngClass]="
+                    page === 1
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-700 hover:bg-gray-50'
+                  ">
+                                    1
+                                </button>
+
+                                <!-- Ellipsis for skipped pages if needed -->
+                                <span *ngIf="totalPages > 2 && page > 2"
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                    ...
+                                </span>
+
+                                <!-- Current page button (if not first or last) -->
+                                <button *ngIf="page !== 1 && page !== totalPages && totalPages > 2"
+                                    (click)="goToPage(page)"
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600">
+                                    {{ page }}
+                                </button>
+
+                                <!-- Ellipsis for skipped pages if needed -->
+                                <span *ngIf="totalPages > 2 && page < totalPages - 1"
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                    ...
+                                </span>
+
+                                <!-- Last page button (if more than one page) -->
+                                <button *ngIf="totalPages > 1" (click)="goToPage(totalPages)"
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium"
+                                    [ngClass]="
+                    page === totalPages
+                      ? 'bg-blue-50 text-blue-600'
+                      : 'text-gray-700 hover:bg-gray-50'
+                  ">
+                                    {{ totalPages }}
+                                </button>
+
+                                <!-- Next page button -->
+                                <button [disabled]="page === totalPages || totalPages === 0" (click)="nextPage()"
+                                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium"
+                                    [ngClass]="
+                    page === totalPages || totalPages === 0
+                      ? 'text-gray-300 cursor-not-allowed'
+                      : 'text-gray-500 hover:bg-gray-50'
+                  ">
+                                    &gt;
+                                </button>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items per page dropdown -->
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="createQuizModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-gray-500 bg-opacity-75 backdrop-blur-sm"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                            <h3 class="text-lg font-semibold leading-6 text-gray-900">
+                                Create New Quiz
+                            </h3>
+                            <div class="mt-4 space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Quiz Title</label>
+                                    <input type="text"
+                                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        placeholder="Enter quiz title" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Category</label>
+                                    <select title="k"
+                                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        <option value="programming">Programming</option>
+                                        <option value="mathematics">Mathematics</option>
+                                        <option value="science">Science</option>
+                                        <option value="language">Language</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                                    <textarea
+                                        class="mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        rows="3" placeholder="Enter quiz description"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button type="button"
+                        class="inline-flex w-full justify-center rounded bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 sm:ml-3 sm:w-auto whitespace-nowrap cursor-pointer">
+                        Create Quiz
+                    </button>
+                    <button type="button"
+                        class="mt-3 inline-flex w-full justify-center rounded bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto whitespace-nowrap cursor-pointer">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-custom-popup *ngIf="isDialogOpen" [title]="dialogTitle" width="w-150" (close)="closeDialog($event)">
+    <!-- Dynamic Content: Form for Creating a Quiz -->
+    <form *ngIf="dialogTitle === 'Create New Quiz'" #quizForm="ngForm" (ngSubmit)="createQuiz()" class="space-y-4 p-2">
+
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Title:</label>
+            <input type="text" placeholder="Enter title" name="title"
+                class="mt-1 block w-full rounded-md border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2"
+                ngModel required />
+        </div>
+
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Category:</label>
+            <input type="text" placeholder="Enter category" name="categoryId"
+                class="mt-1 block w-full rounded-md border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2"
+                ngModel required />
+        </div>
+
+        
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Difficulty:</label>
+            <input type="text" placeholder="Enter difficulty" name="difficultyId"
+                class="mt-1 block w-full rounded-md border-gray-600 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2"
+                ngModel required />
+        </div>
+        <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-gray-700">10 Questions Selected</span>
+            <button title="Add Questions" type="button"
+                class="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition"
+                name="addQuestions">
+                Add Questions
+            </button>
+        </div>
+
+       
+    </form>
+
+</app-custom-popup>

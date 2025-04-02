@@ -14,12 +14,61 @@ exports.createQuiz = async (req, res) => {
 
 exports.getQuiz = async (req, res) => {
     try {
-        const quizs = await Quiz.find();
-        res.json(quizs);
+        const quizs = await Quiz.find()
+        .populate("questions", "question -_id")
+        .populate("createdBy", "name -_id")
+        .select('-_id');
+
+        const newQuiz = quizs.map(quiz => ({
+            ...quiz.toObject(), 
+            questionCount: quiz.questions.length 
+        }));
+        res.json(newQuiz);
     }catch (error){
         res.status(500).json({ message: error.message});
     }
 };
+
+exports.getQuizadmin = async (req, res) => {
+    try {
+        
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        
+        const skip = (page - 1) * limit;
+
+       
+        const quizs = await Quiz.find()
+            .skip(skip)  
+            .limit(limit) 
+            .populate("questions", "question -_id")
+            .populate("createdBy", "name -_id")
+            .select('-_id');
+
+        // Add question count to each quiz
+        const newQuiz = quizs.map(quiz => ({
+            ...quiz.toObject(),
+            questionCount: quiz.questions.length
+        }));
+
+        // Calculate total count of quizzes for pagination
+        const totalCount = await Quiz.countDocuments();
+
+        // Send paginated result with total count and total pages
+        res.json({
+            quizzes: newQuiz,
+            totalCount,
+            page,
+            limit,
+            totalPages: Math.ceil(totalCount / limit)
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 exports.getQuizbyid = async (req, res) => {
     try {

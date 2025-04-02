@@ -13,6 +13,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { ManageUsersComponent } from './features/admin-dashboard/components/manage-users/manage-users.component';
 import { ManageQuizzesComponent } from './features/admin-dashboard/components/manage-quizzes/manage-quizzes.component';
 import { AnalyticsComponent } from './features/admin-dashboard/components/analytics/analytics.component';
+import { CreateNewQuizComponent } from './features/admin-dashboard/components/create-new-quiz/create-new-quiz.component';
 
 export const routes: Routes = [
     {path:'', component:UserLayoutComponent,canActivate: [authGuard],
@@ -30,6 +31,7 @@ export const routes: Routes = [
             {path:'user-management', component:ManageUsersComponent},
             {path:'manage-quizzes', component:ManageQuizzesComponent},
             {path:'analytics', component:AnalyticsComponent},
+            {path:'createnewquiz', component:CreateNewQuizComponent},
         ],
     },
     {path:'', component:LoginComponent},
