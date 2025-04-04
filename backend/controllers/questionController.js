@@ -10,6 +10,22 @@ exports.getQuestion = async (req, res) =>{
     
 };
 
+
+exports.fetchQuestionsadmin = async (req, res) => {
+    try {
+        const { category, difficulty } = req.query; // Extract query parameters
+
+        const filter = {};
+        if (category) filter.category = category;
+        if (difficulty) filter.difficulty = difficulty;
+
+        const questions = await Question.find(filter);
+        res.status(200).json(questions); // Use standard 200 status code for success
+    } catch (error) {
+        res.status(500).json({ error: error.message }); // Return proper error message
+    }
+};
+
 exports.createQuestion = async (req, res) =>{
     try{
         const {type, difficulty, category, question, correct_answer, incorrect_answers  } = req.body;

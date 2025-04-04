@@ -4,50 +4,57 @@
         <p class="text-sm text-gray-500">Basic information about your quiz</p>
     </div>
 
-    <form class="p-6">
+    <form [formGroup]="quizForm" (ngSubmit)="onSubmit()" class="p-6">
+        <div *ngIf="error" class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+            {{ error }}
+        </div>
+        <div *ngIf="success" class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
+            {{ success }}
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-                <label for="quizName" class="block text-sm font-medium text-gray-700 mb-1">Quiz Name*</label>
-                <input type="text" id="quizName" name="quizName" placeholder="Enter quiz name"
+                <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Quiz Name*</label>
+                <input type="text" id="title" formControlName="title" placeholder="Enter quiz name"
+                    [class.border-red-500]="isFieldInvalid('title')"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                <div *ngIf="isFieldInvalid('title')" class="text-red-500 text-sm mt-1">
+                    Quiz name is required
+                </div>
             </div>
             <div>
-                <label for="quizCategory" class="block text-sm font-medium text-gray-700 mb-1">Category*</label>
-                <select id="quizCategory" name="quizCategory"
+                <label for="categoryId" class="block text-sm font-medium text-gray-700 mb-1">Category*</label>
+                <select id="categoryId" formControlName="categoryId" (change)="onCategoryAndDifficultyChange()"
+                    [class.border-red-500]="isFieldInvalid('categoryId')"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                     <option value="" disabled selected>Select a category</option>
-                    <option value="mathematics">Mathematics</option>
-                    <option value="science">Science</option>
-                    <option value="history">History</option>
-                    <option value="language">Language</option>
-                    <option value="computer">Computer Science</option>
+                    <option *ngFor="let category of categories" [value]="category._id">
+                        {{ category.name }}
+                    </option>
                 </select>
+                <div *ngIf="isFieldInvalid('categoryId')" class="text-red-500 text-sm mt-1">
+                    Category is required
+                </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-                <label for="difficulty" class="block text-sm font-medium text-gray-700 mb-1">Difficulty
-                    Level*</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Difficulty Level*</label>
                 <div class="flex space-x-4">
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="difficulty" value="easy" class="text-primary">
-                        <span class="ml-2">Easy</span>
+                    <label *ngFor="let diff of difficulties" class="inline-flex items-center">
+                        <input type="radio" [value]="diff._id" formControlName="difficultyId" 
+                            (change)="onCategoryAndDifficultyChange()" class="text-primary">
+                        <span class="ml-2">{{ diff.name }}</span>
                     </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="difficulty" value="medium" class="text-primary">
-                        <span class="ml-2">Medium</span>
-                    </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="difficulty" value="hard" class="text-primary">
-                        <span class="ml-2">Hard</span>
-                    </label>
+                </div>
+                <div *ngIf="isFieldInvalid('difficultyId')" class="text-red-500 text-sm mt-1">
+                    Difficulty level is required
                 </div>
             </div>
             <div>
-                <label for="timeLimit" class="block text-sm font-medium text-gray-700 mb-1">Time Limit
-                    (minutes)</label>
-                <input type="number" id="timeLimit" name="timeLimit" min="1" max="120"
+                <label for="timeLimit" class="block text-sm font-medium text-gray-700 mb-1">Time Limit (minutes)</label>
+                <input type="number" id="timeLimit" formControlName="timeLimit" min="1" max="120"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="Enter time limit">
             </div>
@@ -55,21 +62,24 @@
 
         <div class="mb-6">
             <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description*</label>
-            <textarea id="description" name="description" rows="3" placeholder="Enter quiz description"
+            <textarea id="description" formControlName="description" rows="3" placeholder="Enter quiz description"
+                [class.border-red-500]="isFieldInvalid('description')"
                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+            <div *ngIf="isFieldInvalid('description')" class="text-red-500 text-sm mt-1">
+                Description is required
+            </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-                <label for="passingScore" class="block text-sm font-medium text-gray-700 mb-1">Passing Score
-                    (%)</label>
-                <input type="number" id="passingScore" name="passingScore" min="1" max="100"
+                <label for="passingScore" class="block text-sm font-medium text-gray-700 mb-1">Passing Score (%)</label>
+                <input type="number" id="passingScore" formControlName="passingScore" min="1" max="100"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="E.g. 70">
             </div>
             <div>
                 <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select id="status" name="status"
+                <select id="status" formControlName="status"
                     class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                     <option value="active">Active</option>
                     <option value="draft">Draft</option>
@@ -78,58 +88,57 @@
             </div>
         </div>
 
-        
-
-        <div class="p-6 bg-gray-50 rounded-lg mb-8">
+        <!-- Question Selector -->
+        <div *ngIf="showQuestionSelector" class="p-6 bg-gray-50 rounded-lg mb-8">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-medium text-gray-900">Questions</h3>
-                <button type="button"
-                    class="bg-blue-600 text-white px-3 py-1 rounded-lg flex items-center space-x-1">
-                    <i class="ri-add-line"></i>
-                    <span>Add Question</span>
+                <h3 class="text-lg font-medium text-gray-900">Available Questions</h3>
+                <button type="button" (click)="addSelectedQuestions()"
+                    [disabled]="selectedQuestions.length === 0"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50">
+                    Add Selected Questions ({{ selectedQuestions.length }})
                 </button>
             </div>
 
-            <div class="bg-white rounded-lg border p-4 mb-4">
-                <div class="flex justify-between mb-2">
-                    <h4 class="font-medium">Question 1</h4>
-                    <div class="flex space-x-2">
-                        <button type="button" class="text-gray-500 hover:text-primary">
-                            <i class="ri-pencil-line"></i>
-                        </button>
-                        <button type="button" class="text-gray-500 hover:text-red-600">
-                            <i class="ri-delete-bin-line"></i>
-                        </button>
+            <div class="space-y-4">
+                <div *ngFor="let question of availableQuestions" 
+                    class="bg-white rounded-lg border p-4 cursor-pointer hover:border-blue-500"
+                    [class.border-blue-500]="isQuestionSelected(question)"
+                    (click)="toggleQuestionSelection(question)">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <input title="kamal" type="checkbox" [checked]="isQuestionSelected(question)"
+                                class="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-gray-900">{{ question.question }}</p>
+                            
+                        </div>
                     </div>
-                </div>
-                <p class="text-sm text-gray-700 mb-2">What is the value of π (pi) to two decimal places?</p>
-                <div class="pl-4 text-sm text-gray-600">
-                    <p><span class="text-green-600">✓</span> 3.14</p>
-                    <p><span class="text-red-600">✗</span> 3.12</p>
-                    <p><span class="text-red-600">✗</span> 3.16</p>
-                    <p><span class="text-red-600">✗</span> 3.18</p>
                 </div>
             </div>
+        </div>
 
-            <div class="bg-white rounded-lg border p-4">
+        <!-- Selected Questions -->
+        <div formArrayName="questions" class="p-6 bg-gray-50 rounded-lg mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-medium text-gray-900">Selected Questions</h3>
+            </div>
+
+            <div *ngFor="let question of questions.controls; let i=index" [formGroupName]="i" class="bg-white rounded-lg border p-4 mb-4">
                 <div class="flex justify-between mb-2">
-                    <h4 class="font-medium">Question 2</h4>
+                    <h4 class="font-medium">Question {{ i + 1 }}</h4>
                     <div class="flex space-x-2">
-                        <button type="button" class="text-gray-500 hover:text-primary">
-                            <i class="ri-pencil-line"></i>
-                        </button>
-                        <button type="button" class="text-gray-500 hover:text-red-600">
+                        <button title="delete question" type="button" (click)="removeQuestion(i)" class="text-gray-500 hover:text-red-600">
                             <i class="ri-delete-bin-line"></i>
                         </button>
                     </div>
                 </div>
-                <p class="text-sm text-gray-700 mb-2">Solve for x: 2x + 5 = 15</p>
-                <div class="pl-4 text-sm text-gray-600">
-                    <p><span class="text-red-600">✗</span> x = 4</p>
-                    <p><span class="text-green-600">✓</span> x = 5</p>
-                    <p><span class="text-red-600">✗</span> x = 6</p>
-                    <p><span class="text-red-600">✗</span> x = 7</p>
+
+                <div class="mb-4">
+                    <p class="text-sm text-gray-700">{{ question.get('question')?.value }}</p>
                 </div>
+
+                
             </div>
         </div>
 
@@ -145,7 +154,7 @@
                         <p class="text-sm text-gray-600">Display correct answers after quiz submission</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" value="" class="sr-only peer" checked>
+                        <input title="kamal" type="checkbox" value="" class="sr-only peer" checked>
                         <div
                             class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
                         </div>
@@ -158,7 +167,7 @@
                         <p class="text-sm text-gray-600">Display a public leaderboard for this quiz</p>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" value="" class="sr-only peer">
+                        <input title="kamal" type="checkbox" value="" class="sr-only peer">
                         <div
                             class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
                         </div>
@@ -167,9 +176,11 @@
             </div>
         </div>
 
-        <div class="flex justify-end space-x-4">
-            <button type="button" class="px-4 py-2 border rounded-lg text-gray-700">Cancel</button>
-            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Save Quiz</button>
+        <div class="flex justify-end">
+            <button type="submit" [disabled]="loading || questions.length === 0"
+                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50">
+                {{ loading ? 'Creating...' : 'Create Quiz' }}
+            </button>
         </div>
     </form>
 </div>

@@ -1,32 +1,33 @@
-<div class="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-50 backdrop-filter backdrop-blur-[1px] z-50 ">
+<div class="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-50 backdrop-filter backdrop-blur-[1px] z-50">
     <div [ngClass]="['bg-white rounded-xl shadow-xl', width]">
-      <div class="p-5 border-b border-gray-100">
-        <div class="flex justify-between items-center">
-          <h2 class="text-xl font-bold text-gray-900">{{ title }}</h2>
-          <button title="kamal" (click)="onClose(false)" class="text-gray-500 hover:text-indigo-600 transition-colors">
-            <div class="w-5 h-5 flex items-center justify-center"> 
-                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 304 384"><path fill="currentColor" d="M299 73L179 192l120 119l-30 30l-120-119L30 341L0 311l119-119L0 73l30-30l119 119L269 43z"/></svg>
-              </div>
-          </button>
+        <div class="p-5 border-b border-gray-100">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-900">{{ title }}</h2>
+                <button (click)="onClose(false)" class="text-gray-500 hover:text-indigo-600 transition-colors">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 304 384">
+                            <path fill="currentColor" d="M299 73L179 192l120 119l-30 30l-120-119L30 341L0 311l119-119L0 73l30-30l119 119L269 43z" />
+                        </svg>
+                    </div>
+                </button>
+            </div>
         </div>
-      </div>
-      
-      <!-- Dynamic Content Here -->
-      <div class="p-5">
-        <ng-content></ng-content>
-      </div>
-      
-      <div *ngIf="showActions" class="p-5 pt-2 border-t border-gray-100 flex justify-end space-x-3">
-        <button 
-          (click)="onClose(false)" 
-          class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
-          Cancel
-        </button>
-        <button 
-          (click)="onClose(true)" 
-          class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
-          Save
-        </button>
-      </div>
+
+        <!-- Dynamic Content Here -->
+        <div class="p-5">
+            <ng-content></ng-content>
+        </div>
+
+        <!-- Default buttons - only show if hideDefaultButtons is false -->
+        <div *ngIf="showActions && !hideDefaultButtons" class="p-5 pt-2 border-t border-gray-100 flex justify-end space-x-3">
+            <button (click)="onClose(false)" 
+                    [ngClass]="['px-4 py-2 rounded-md text-gray-700 transition-colors', cancelButtonClass]">
+                {{ cancelButtonText }}
+            </button>
+            <button (click)="onSave()" 
+                    [ngClass]="['px-4 py-2 text-white rounded-md transition-colors', confirmButtonClass]">
+                {{ confirmButtonText }}
+            </button>
+        </div>
     </div>
-  </div>
+</div>

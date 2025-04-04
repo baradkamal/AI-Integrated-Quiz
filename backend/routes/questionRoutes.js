@@ -1,5 +1,5 @@
 const express = require("express");
-const { getQuestion, createQuestion, updateQuestion, deleteQuestion, getQuestionsByIds } = require("../controllers/questionController");
+const { getQuestion, createQuestion, updateQuestion, deleteQuestion, getQuestionsByIds,fetchQuestionsadmin } = require("../controllers/questionController");
 
 const router = express.Router();
 
@@ -12,6 +12,8 @@ const router = express.Router();
 // });
 
 router.get("/question",getQuestion);
+
+router.get("/questionadmin",fetchQuestionsadmin);
 
 router.post("/questionbyid",getQuestionsByIds);
 

@@ -16,7 +16,7 @@ export interface QuizResponse {
 })
 export class QuizServiceService {
   private getquizurl = 'http://localhost:3000/api/adminadvancequiz';
-  private getquizurladmin = 'http://localhost:3000/api/quiz/admin';
+  private getquizurladmin = 'http://localhost:3000/api/Advancequiz';
   private getquizbyid = 'http://localhost:3000/api/quizbyid';
   private getquizbyids = 'http://localhost:3000/api/quizbyids';
   
@@ -31,7 +31,7 @@ export class QuizServiceService {
   }
 
   fetchquizbyid(id: any): Observable<Quiz> {
-    return this.http.get<Quiz>(this.getquizbyid+ '/'+id);
+    return this.http.get<Quiz>(this.getquizurladmin+ '/'+id);
   }
 
   fetchquizbyids(quizIds: any): Observable<any[]> {
@@ -39,12 +39,18 @@ export class QuizServiceService {
   }
 
   saveQuiz(quiz:Quiz): Observable<Quiz> {
-     return this.http.post<Quiz>(this.getquizurl,quiz);
+     return this.http.post<Quiz>(this.getquizurladmin,quiz);
   }
 
-  deleteQuiz(quiz:any): Observable<Quiz> {
-    return this.http.delete<Quiz>(this.getquizurl+'/'+quiz._id);
+  deleteQuiz(quizId: string): Observable<Quiz> {
+    return this.http.delete<Quiz>(`${this.getquizurladmin}/${quizId}`);
   }
 
+  updateQuizStatus(quizId: string, status: string): Observable<Quiz> {
+    return this.http.patch<Quiz>(`${this.getquizurladmin}/${quizId}`, { status });
+  }
+  updateQuizAdmin(quizId: string, updates: Partial<Quiz>): Observable<Quiz> {
+    return this.http.put<Quiz>(`${this.getquizurladmin}/${quizId}`, updates);
+  }
   
 }
