@@ -30,6 +30,7 @@ export class LoginComponent {
         this.auth.setId(response._id);
         this.auth.setEmail(response.email);
         const isAdmin = response.admin;
+        localStorage.setItem('admin', isAdmin);
         if (isAdmin) {
           this.router.navigateByUrl("deshboard");  
         } else {
