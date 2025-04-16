@@ -14,11 +14,10 @@ const cors = require("cors");
 
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-
+const genai = require("./routes/genAiRoutes");
 
 const app = express();
 
-// Serve static files from the public directory
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
@@ -34,6 +33,7 @@ app.use("/api",quizRoutes);
 app.use("/api", userResponseroutes);
 app.use("/api", category);
 app.use("/api", difficulti);
+app.use("/api", genai);
 
 
 

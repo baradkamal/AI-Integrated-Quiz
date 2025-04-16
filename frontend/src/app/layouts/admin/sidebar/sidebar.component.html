@@ -52,7 +52,7 @@
             <line x1="23" y1="11" x2="17" y2="11"></line>
           </svg>
         </div>
-        <span>User Management</span>
+        <span>Manage Users</span>
       </a>
       <a
         routerLink="/analytics"
@@ -68,7 +68,24 @@
           
         </div>
         
-        <span>Analytics</span>
+        <span>View Analytics</span>
+      </a>
+
+      <a
+        routerLink="/Questation"
+        routerLinkActive="text-gray-900 font-bold border-b-2 border-blue-500"
+        class="sidebar-item flex items-center space-x-3 p-3 rounded-lg hover:bg-slate-200" (click)="toggleSidebar()" 
+      >
+        <div class="w-6 h-6 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          
+        </div>
+        
+        <span>Manage Questation</span>
       </a>
       
     </div>
@@ -78,7 +95,7 @@
 <!-- Main Content -->
 <div class="flex-1 flex flex-col  lg:ml-64 transition-all duration-300">
     <!-- Header -->
-    <header class="h-16 bg-white shadow-sm flex items-center justify-between px-6">
+    <header class="sticky top-0 z-40 h-16 bg-white shadow-sm flex items-center justify-between px-6">
       <button aria-label="Open menu"
         id="sidebar-toggle"
         (click)="toggleSidebar()"
@@ -96,7 +113,8 @@
             class="flex items-center space-x-2 cursor-pointer"
             (click)="toggleUserPanel()"
           >
-            <img
+            <img 
+              title="Profile"
               [src]="profileImage"
               [alt]="userName"
               class="w-8 h-8 rounded-full object-cover border-2 border-gray-200"
