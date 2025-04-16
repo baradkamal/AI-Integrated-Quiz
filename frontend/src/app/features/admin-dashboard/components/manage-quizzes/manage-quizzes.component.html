@@ -1,13 +1,13 @@
 <div>
-  <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex justify-between items-center mb-6">
-        <div>
-          <h1 class="text-2xl font-semibold text-gray-900">Manage Quizzes</h1>
-          <p class="mt-1 text-sm text-gray-500">
-            Create, edit and manage your quizzes
-          </p>
-        </div>
+    <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-semibold text-gray-900">Manage Quizzes</h1>
+                    <p class="mt-1 text-sm text-gray-500">
+                        Create, edit and manage your quizzes
+                    </p>
+                </div>
         <button
           routerLink="/createnewquiz"
           class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap cursor-pointer"
@@ -20,78 +20,78 @@
           >
             <path
               fill-rule="evenodd"
-              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
               clip-rule="evenodd"
             />
-          </svg>
-          Create New Quiz
-        </button>
-      </div>
-      <div class="bg-white rounded shadow-sm overflow-hidden">
-        <!-- Quiz list table -->
-        <div class="overflow-x-auto">
-          <table class="min-w-full table-auto">
-            <thead>
-              <tr class="bg-gray-50 border-b border-gray-200">
-                <th
+                    </svg>
+                    Create New Quiz
+                </button>
+            </div>
+            <div class="bg-white rounded shadow-sm overflow-hidden">
+                <!-- Quiz list table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200">
+                                <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Quiz Title
-                </th>
-                <th
+                                    Quiz Title
+                                </th>
+                                <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Category
-                </th>
-                <th
+                                    Category
+                                </th>
+                                <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Difficulty
-                </th>
-                <th
+                                    Difficulty
+                                </th>
+                                <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Questions
-                </th>
-                <th
+                                    Questions
+                                </th>
+                                <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Status
-                </th>
-                <th
+                                    Status
+                                </th>
+                                <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Created
-                </th>
-                <th
+                                    Created
+                                </th>
+                                <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              <tr *ngIf="quizList.length === 0">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr *ngIf="quizList.length === 0">
                 <td
                   colspan="5"
                   class="px-6 py-4 text-sm text-gray-500 text-center"
                 >
-                  No quizzes found
-                </td>
-              </tr>
-              <tr *ngFor="let quiz of quizList">
-                <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                  {{ quiz.title }}
-                </td>
-                <td class="px-6 py-4 text-sm text-gray-500">
-                  {{ quiz.category.name }}
-                </td>
-                <td class="px-6 py-4 text-sm text-gray-500">
-                  {{ quiz.difficulty.name }}
-                </td>
-                <td class="px-6 py-4 text-sm text-center text-gray-500">
-                  {{ quiz.questions.length }}
-                </td>
+                                    No quizzes found
+                                </td>
+                            </tr>
+                            <tr *ngFor="let quiz of quizList">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                    {{ quiz.title }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{ quiz.category.name }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    {{ quiz.difficulty.name }}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-center text-gray-500">
+                                    {{ quiz.questions.length }}
+                                </td>
                 <td class="px-6 py-4 text-sm">
                   <span
                     class="px-2 py-1 rounded-full text-xs font-medium {{
@@ -114,10 +114,10 @@
                   >
                     <i class="ri-refresh-line"></i>
                   </button>
-                </td>
-                <td class="px-6 py-4 text-sm text-gray-500">
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
                   {{ quiz.createdAt | date : "mediumDate" }}
-                </td>
+                                </td>
                 <td class="px-6 py-4 text-sm">
                   <button
                     title="view Quiz"
@@ -131,7 +131,7 @@
                       )
                     "
                   >
-                    <i class="ri-eye-line"></i>
+                                        <i class="ri-eye-line"></i>
                   </button>
                   <button
                     title="kamal"
@@ -145,7 +145,7 @@
                       )
                     "
                   >
-                    <i class="ri-edit-line"></i>
+                                        <i class="ri-edit-line"></i>
                   </button>
                   <button
                     title="Detele Quiz"
@@ -159,47 +159,47 @@
                     "
                     class="text-red-600 hover:text-red-900"
                   >
-                    <i class="ri-delete-bin-line"></i>
+                                        <i class="ri-delete-bin-line"></i>
                   </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        <!-- Pagination controls -->
+                <!-- Pagination controls -->
         <div
           class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6"
         >
-          <div class="flex-1 flex justify-between sm:hidden">
-            <button
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        <button
               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50"
             >
-              Previous
-            </button>
-            <button
+                            Previous
+                        </button>
+                        <button
               class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50"
             >
-              Next
-            </button>
-          </div>
+                            Next
+                        </button>
+                    </div>
 
           <div
             class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"
           >
-            <div>
-              <p class="text-sm text-gray-700">
-                Showing
-                <span class="font-medium">{{ (page - 1) * limit + 1 }}</span> to
-                <span class="font-medium">{{
-                  page * limit > totalCount ? totalCount : page * limit
-                }}</span>
-                of <span class="font-medium">{{ totalCount }}</span> results
-              </p>
-            </div>
-            <div>
-              <div class="relative inline-flex pr-2">
-                <div>
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                Showing
+                                <span class="font-medium">{{ (page - 1) * limit + 1 }}</span> to
+                                <span class="font-medium">{{
+                                    page * limit > totalCount ? totalCount : page * limit
+                                    }}</span>
+                                of <span class="font-medium">{{ totalCount }}</span> results
+                            </p>
+                        </div>
+                        <div>
+                            <div class="relative inline-flex pr-2">
+                                <div>
                   <label for="limit-select" class="text-sm text-gray-700"
                     >Items per page:</label
                   >
@@ -210,102 +210,102 @@
                     [value]="limit"
                     class="ml-2 p-2 border border-gray-300 text-sm rounded-md bg-white"
                   >
-                    <option [value]="1">1</option>
-                    <option [value]="10">10</option>
-                    <option [value]="25">25</option>
-                    <option [value]="50">50</option>
-                  </select>
-                </div>
-              </div>
+                                        <option [value]="1">1</option>
+                                        <option [value]="10">10</option>
+                                        <option [value]="25">25</option>
+                                        <option [value]="50">50</option>
+                                    </select>
+                                </div>
+                            </div>
               <nav
                 class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
               >
-                <!-- Previous page button -->
+                                <!-- Previous page button -->
                 <button
                   [disabled]="page === 1"
                   (click)="previousPage()"
-                  class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium"
-                  [ngClass]="
+                                    class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium"
+                                    [ngClass]="
                     page === 1
                       ? 'text-gray-300 cursor-not-allowed'
                       : 'text-gray-500 hover:bg-gray-50'
                   "
                 >
-                  &lt;
-                </button>
+                                    &lt;
+                                </button>
 
-                <!-- First page button -->
+                                <!-- First page button -->
                 <button
                   (click)="goToPage(1)"
-                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium"
-                  [ngClass]="
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium"
+                                    [ngClass]="
                     page === 1
                       ? 'bg-blue-50 text-blue-600'
                       : 'text-gray-700 hover:bg-gray-50'
                   "
                 >
-                  1
-                </button>
+                                    1
+                                </button>
 
-                <!-- Ellipsis for skipped pages if needed -->
+                                <!-- Ellipsis for skipped pages if needed -->
                 <span
                   *ngIf="totalPages > 2 && page > 2"
                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700"
                 >
-                  ...
-                </span>
+                                    ...
+                                </span>
 
-                <!-- Current page button (if not first or last) -->
+                                <!-- Current page button (if not first or last) -->
                 <button
                   *ngIf="page !== 1 && page !== totalPages && totalPages > 2"
-                  (click)="goToPage(page)"
+                                    (click)="goToPage(page)"
                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600"
                 >
-                  {{ page }}
-                </button>
+                                    {{ page }}
+                                </button>
 
-                <!-- Ellipsis for skipped pages if needed -->
+                                <!-- Ellipsis for skipped pages if needed -->
                 <span
                   *ngIf="totalPages > 2 && page < totalPages - 1"
                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700"
                 >
-                  ...
-                </span>
+                                    ...
+                                </span>
 
-                <!-- Last page button (if more than one page) -->
+                                <!-- Last page button (if more than one page) -->
                 <button
                   *ngIf="totalPages > 1"
                   (click)="goToPage(totalPages)"
-                  class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium"
-                  [ngClass]="
+                                    class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium"
+                                    [ngClass]="
                     page === totalPages
                       ? 'bg-blue-50 text-blue-600'
                       : 'text-gray-700 hover:bg-gray-50'
                   "
                 >
-                  {{ totalPages }}
-                </button>
+                                    {{ totalPages }}
+                                </button>
 
-                <!-- Next page button -->
+                                <!-- Next page button -->
                 <button
                   [disabled]="page === totalPages || totalPages === 0"
                   (click)="nextPage()"
-                  class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium"
-                  [ngClass]="
+                                    class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium"
+                                    [ngClass]="
                     page === totalPages || totalPages === 0
                       ? 'text-gray-300 cursor-not-allowed'
                       : 'text-gray-500 hover:bg-gray-50'
                   "
                 >
-                  &gt;
-                </button>
-              </nav>
+                                    &gt;
+                                </button>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </main>
+    </main>
 </div>
 
 <app-custom-popup
@@ -372,7 +372,7 @@
                 {{ quizDetails.description }}
               </dd>
             </div>
-            <div>
+                                <div>
               <dt class="text-sm font-medium text-gray-500">Status</dt>
               <dd class="mt-1">
                 <span
@@ -382,16 +382,16 @@
                   {{ quizDetails.status }}
                 </span>
               </dd>
-            </div>
-            <div>
+                                </div>
+                                <div>
               <dt class="text-sm font-medium text-gray-500">Created At</dt>
               <dd class="mt-1 text-sm text-gray-900">
                 {{ quizDetails.createdAt | date : "mediumDate" }}
               </dd>
             </div>
           </dl>
-        </div>
-        <div>
+                                </div>
+                                <div>
           <h3 class="text-lg font-medium text-gray-900">Questions</h3>
           <div class="mt-2 space-y-4">
             <div
@@ -415,11 +415,11 @@
                   question.correctAnswer
                 }}</span>
               </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
     <!-- Edit Quiz Form -->
     <div *ngIf="dialogType === 'edit' && editForm">
@@ -466,7 +466,7 @@
                 rows="4"
                 class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               ></textarea>
-            </div>
+                </div>
             <div>
               <label
                 for="status"
@@ -483,9 +483,9 @@
                 <option value="archived">Archived</option>
               </select>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+        </div>
+        </div>
 </app-custom-popup>

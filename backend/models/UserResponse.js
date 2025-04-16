@@ -9,7 +9,7 @@ const userResponseSchema = new mongoose.Schema({
     },
     quiz: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Quiz',
+        ref: 'AdvanceQuiz',
         required: true
     },
     responses: [{
@@ -36,7 +36,8 @@ const userResponseSchema = new mongoose.Schema({
         default: 0
     },
     completedAt: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     status: {
         type: String,

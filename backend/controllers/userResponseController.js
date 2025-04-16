@@ -31,11 +31,26 @@ exports.getUserResponses2 = async (req, res) => {
 exports.userResponseByuser = async (req, res) =>{
     try{
         const { id } = req.params;
-        const userresponse = await UserResponse.find({user: id});
+        const userresponse = await UserResponse.find({user: id})
+        .populate({
+            path: 'quiz',  
+            select: 'title _id',  
+            populate: [
+                {
+                    path: 'category',  // Populate the category field inside quiz
+                    select: 'name image -_id'  // Include name and image fields from the Category model
+                },
+                {
+                    path: 'difficulty',  // Populate the difficulty field inside quiz
+                    select: 'name -_id'  // Include name and description fields from the Difficulty model
+                }
+            ]
+        });
 
         if (!userresponse || userresponse.length === 0) {
             return res.status(404).json({ message: "No user response found" });
         }
+         
         return res.status(200).json(userresponse);
     } catch (error){
         res.status(500).json({message: error.message});

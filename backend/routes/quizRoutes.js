@@ -15,7 +15,7 @@ router.get("/quiz/admin", getQuizadmin);
 
 // advance quiz
 router.post("/Advancequiz",createAdvanceQuiz);
-router.get("/advancequiz", getAllAdvanceQuizzes);     
+router.get("/Advancequiz", getAllAdvanceQuizzes);     
 router.get("/advancequiz/:id", getAdvanceQuizById);   
 router.delete("/advancequiz/:id", deleteAdvanceQuiz);
 router.put("/advancequiz/:id", updateAdvanceQuiz);

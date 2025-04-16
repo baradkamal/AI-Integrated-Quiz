@@ -1,11 +1,14 @@
 import { Component, HostListener, Inject, ElementRef, PLATFORM_ID } from '@angular/core';
-import { RouterLink, RouterOutlet,Router, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterOutlet, Router, RouterLinkActive } from '@angular/router';
 import { UserServiceService } from '../../../core/services/user-service.service';
 import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { ImageUrlService } from '../../../core/services/image-url.service';
+
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink , RouterOutlet, CommonModule, RouterLinkActive],
+  standalone: true,
+  imports: [RouterLink, RouterOutlet, CommonModule, RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
@@ -14,35 +17,48 @@ export class SidebarComponent {
   isMobile = false; // Track if we're on mobile
   isUserPanelVisible = false;
   userId: string | null = null;
-  userName: string = '';// Replace with actual user name from your auth service
-  
+  userName: string = '';
+  profileImage: string = '/assets/images/default-profile.png'; // Default image
+
   constructor(
     private eRef: ElementRef,
     private userService: UserServiceService,
+    private imageUrlService: ImageUrlService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    
     this.checkScreenSize();
-    
   }
+
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.userId = localStorage.getItem('user_id');
-      this.getusernamebyid();
+      if (this.userId) {
+        this.getusernamebyid();
+      }
     }
   }
-  getusernamebyid()
-  {
+
+  getusernamebyid() {
     this.userService.finduserbyid(this.userId).subscribe({
       next: (response) => {
-          this.userName = response.name;
-      }, error: (error) => {
-          console.error('error fetching user name', error);
+        this.userName = response.name;
+        if (response.profileImage) {
+          this.profileImage = this.imageUrlService.getFullImageUrl(response.profileImage);
+        }
+      },
+      error: (error) => {
+        console.error('error fetching user name', error);
       }
-    })
+    });
   }
 
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (img) {
+      img.src = '/assets/images/default-profile.png';
+    }
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -50,8 +66,8 @@ export class SidebarComponent {
   }
   
   checkScreenSize() {
-    this.isMobile = window.innerWidth < 1024; // 1024px is the lg breakpoint in Tailwind
-    // Close sidebar on mobile by default
+    this.isMobile = window.innerWidth < 1024; 
+    
     if (this.isMobile && this.isOpen) {
       this.isOpen = false;
     } else if (!this.isMobile && !this.isOpen) {

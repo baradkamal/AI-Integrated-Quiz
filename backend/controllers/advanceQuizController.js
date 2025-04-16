@@ -14,15 +14,15 @@ exports.createAdvanceQuiz = async (req, res) => {
     }
 };
 
-// Get all quizzes with question count
+
 exports.getAllAdvanceQuizzes = async (req, res) => {
     try {
         const quizzes = await AdvanceQuiz.find()
-            .populate("questions", "question -_id")
+            .populate("questions", "question correct_answer incorrect_answers type _id")
             .populate("category", "name -_id")
             .populate("difficulty", "name -_id")
             .populate("createdBy", "name -_id")
-            .select('-_id');
+            //.select('-_id');
 
         res.status(200).json(quizzes);
     } catch (error) {

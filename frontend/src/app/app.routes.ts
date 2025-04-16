@@ -14,6 +14,7 @@ import { ManageUsersComponent } from './features/admin-dashboard/components/mana
 import { ManageQuizzesComponent } from './features/admin-dashboard/components/manage-quizzes/manage-quizzes.component';
 import { AnalyticsComponent } from './features/admin-dashboard/components/analytics/analytics.component';
 import { CreateNewQuizComponent } from './features/admin-dashboard/components/create-new-quiz/create-new-quiz.component';
+import { AddnewuserComponent } from './features/admin-dashboard/components/addnewuser/addnewuser.component';
 
 export const routes: Routes = [
     {path:'', component:UserLayoutComponent,canActivate: [authGuard],
@@ -32,6 +33,8 @@ export const routes: Routes = [
             {path:'manage-quizzes', component:ManageQuizzesComponent},
             {path:'analytics', component:AnalyticsComponent},
             {path:'createnewquiz', component:CreateNewQuizComponent},
+            {path:'addnewuser', component:AddnewuserComponent},
+            {path:'profileadmin', component:UserProfileComponent},
         ],
     },
     {path:'', component:LoginComponent},

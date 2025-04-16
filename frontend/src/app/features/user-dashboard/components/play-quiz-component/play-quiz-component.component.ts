@@ -1,7 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { QuizServiceService } from '../../../../core/services/quiz-service.service';
+import { AdvanceQuiz } from '../../../../interfaces/Advancequiz';
+import { UserResponse } from '../../../../interfaces/user-response';
+
+interface UserAnswer {
+  question: string;
+  userAnswer: string;
+  isCorrect: boolean;
+  points: number;
+}
+
+interface QuizResponse {
+  user: string;
+  quiz: string;
+  responses: UserAnswer[];
+  totalScore: number;
+  status: 'completed';
+  completedAt: string;
+}
 
 interface QuizOption {
   id: number;
@@ -10,25 +29,38 @@ interface QuizOption {
 
 @Component({
   selector: 'app-play-quiz-component',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './play-quiz-component.component.html',
   styleUrls: ['./play-quiz-component.component.css']
 })
 export class PlayQuizComponentComponent implements OnInit, OnDestroy {
-  @Input() quizData: any;
+  @Input() quizData!: AdvanceQuiz;
   @Output() closeQuiz = new EventEmitter<void>();
   
-  currentQuestionIndex = 0;
-  selectedAnswers: { [key: number]: string } = {};
-  score = 0;
+  currentQuestionIndex = signal(0);
+  selectedAnswers = signal<{ [key: string]: string }>({});
+  quizCompleted = signal(false);
+  score = signal(0);
   showResult = false;
   timer: any;
+  userId: string = '';
   
   questionOptions: QuizOption[][] = [];
   
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private quizService: QuizServiceService) {
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      this.userId = storedUserId;
+    }
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    if (!this.quizData) {
+      console.error('No quiz data provided');
+      return;
+    }
+
     if (this.quizData?.questions) {
       this.questionOptions = this.quizData.questions.map((question: any) => 
         this.shuffleOptions(question)
@@ -46,23 +78,39 @@ export class PlayQuizComponentComponent implements OnInit, OnDestroy {
       }));
   }
 
+  get currentQuestion() {
+    return this.quizData.questions[this.currentQuestionIndex()];
+  }
+
+  get allAnswers() {
+    if (!this.currentQuestion) return [];
+    return [
+      this.currentQuestion.correct_answer,
+      ...this.currentQuestion.incorrect_answers
+    ].sort(() => Math.random() - 0.5);
+  }
+
   selectAnswer(answer: string) {
-    this.selectedAnswers[this.currentQuestionIndex] = answer;
+    if (!this.currentQuestion) return;
+    this.selectedAnswers.update(answers => ({
+      ...answers,
+      [this.currentQuestion._id]: answer
+    }));
   }
 
   getCurrentOptions(): QuizOption[] {
-    return this.questionOptions[this.currentQuestionIndex] || [];
+    return this.questionOptions[this.currentQuestionIndex()];
   }
 
   isCorrectAnswer(optionText: string): boolean {
-    return optionText === this.quizData.questions[this.currentQuestionIndex].correct_answer;
+    return optionText === this.currentQuestion.correct_answer;
   }
 
   calculateTotalScore(): number {
     let totalScore = 0;
-    Object.keys(this.selectedAnswers).forEach(index => {
+    Object.keys(this.selectedAnswers()).forEach(index => {
       const questionIndex = parseInt(index);
-      if (this.selectedAnswers[questionIndex] === this.quizData.questions[questionIndex].correct_answer) {
+      if (this.selectedAnswers()[index] === this.quizData.questions[questionIndex].correct_answer) {
         totalScore++;
       }
     });
@@ -70,61 +118,82 @@ export class PlayQuizComponentComponent implements OnInit, OnDestroy {
   }
 
   nextQuestion() {
-    if (!this.selectedAnswers[this.currentQuestionIndex]) {
-      return;
-    }
-
-    if (this.currentQuestionIndex < this.quizData.questions.length - 1) {
-      this.currentQuestionIndex++;
+    if (this.currentQuestionIndex() < this.quizData.questions.length - 1) {
+      this.currentQuestionIndex.update(index => index + 1);
     } else {
-      this.score = this.calculateTotalScore();
-      this.showResult = true;
-      this.submitResponses();
+      this.completeQuiz();
     }
   }
 
-  submitResponses() {
-    const userId = localStorage.getItem('user_id');
-    const quizId = this.quizData._id;
+  previousQuestion() {
+    if (this.currentQuestionIndex() > 0) {
+      this.currentQuestionIndex.update(index => index - 1);
+    }
+  }
 
-    if (!quizId) return;
+  completeQuiz() {
+    const responses: UserAnswer[] = this.quizData.questions.map(question => {
+      const userAnswer = this.selectedAnswers()[question._id] || '';
+      const isCorrect = userAnswer === question.correct_answer;
+      const points = isCorrect ? 1 : 0;
 
-    this.score = this.calculateTotalScore();
+      return {
+        question: question._id,
+        userAnswer,
+        isCorrect,
+        points
+      };
+    });
 
-    const userResponse = {
-      user: userId,
-      quiz: quizId,
-      responses: this.quizData.questions.map((question: any, index: number) => {
-        const userAnswer = this.selectedAnswers[index] || '';
-        const isCorrect = userAnswer === question.correct_answer;
-        
-        return {
-          question: question._id,
-          userAnswer: userAnswer,
-          isCorrect: isCorrect,
-          points: isCorrect ? 1 : 0
-        };
-      }),
-      totalScore: this.score
+    const totalScore = responses.reduce((sum, response) => sum + response.points, 0);
+
+    const quizResponse: QuizResponse = {
+      user: this.userId,
+      quiz: this.quizData._id,
+      responses,
+      totalScore,
+      status: 'completed',
+      completedAt: new Date().toISOString()
     };
 
-    this.http.post('http://localhost:3000/api/userResponse', userResponse, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    }).subscribe({
-      next: () => {},
+    // Log the response data for debugging
+    console.log('Submitting quiz response:', quizResponse);
+
+    this.quizService.submitQuizResponse(quizResponse).subscribe({
+      next: (response) => {
+        console.log('Quiz response submitted successfully:', response);
+        this.score.set(totalScore);
+        this.quizCompleted.set(true);
+        this.showResult = true;
+      },
       error: (error) => {
-        if (error.status === 500 && error.error) {
-          // Handle server error silently
+        console.error('Error submitting quiz response:', error);
+        if (error.error) {
+          console.error('Error details:', error.error);
         }
       }
     });
   }
 
+  get progress() {
+    return ((this.currentQuestionIndex() + 1) / this.quizData.questions.length) * 100;
+  }
+
+  isAnswerSelected(answer: string): boolean {
+    if (!this.currentQuestion) return false;
+    return this.selectedAnswers()[this.currentQuestion._id] === answer;
+  }
+
+  isLastQuestion(): boolean {
+    return this.currentQuestionIndex() === this.quizData.questions.length - 1;
+  }
+
   restartQuiz() {
-    this.currentQuestionIndex = 0;
-    this.score = 0;
+    this.currentQuestionIndex.set(0);
+    this.selectedAnswers.set({});
+    this.quizCompleted.set(false);
+    this.score.set(0);
     this.showResult = false;
-    this.selectedAnswers = {};
     
     if (this.quizData?.questions) {
       this.questionOptions = this.quizData.questions.map((question: any) => 

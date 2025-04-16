@@ -10,22 +10,27 @@
                 <a routerLink="/leaderboard" class="text-gray-700 hover:text-primary">Leaderboard</a>
             </div>
             <div class="flex items-center space-x-4">
-                
                 <div class="relative">
                     <!-- Profile Button -->
                     <button (click)="toggleUserPanel()" class="flex items-center space-x-2">
-                        <img src="https://img.freepik.com/free-photo/bearded-young-man-wearing-shirt_273609-5938.jpg?t=st=1742990704~exp=1742994304~hmac=3351fabdb76b51ba166959ab3c9b2390f8c31e0579b294037560e9fcad08d46d&w=1380" 
-                             class="w-10 h-10 rounded-full object-cover" 
-                             alt="Profile">
+                        <img [src]="profileImage" 
+                             [alt]="userName"
+                             class="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                             (error)="onImageError($event)">
                         <span class="hidden md:block text-sm font-medium text-gray-700">{{userName}}</span>
                     </button>
                 
                     <!-- User Dropdown Panel -->
-                    <div *ngIf="isUserPanelVisible" class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg">
+                    <div *ngIf="isUserPanelVisible" 
+                         class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-1">
+                        
                         <div class="py-1">
-                            <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                            <a (click)="onLogoff()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
-                            
+                            <a routerLink="/profile" 
+                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</a>
+                            <button (click)="onLogoff()" 
+                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                Logout
+                            </button>
                         </div>
                     </div>
                 </div>   
@@ -33,8 +38,8 @@
         </div>
     </div>
 </nav>
-<div class="relative h-25 w-full">
-  
+<div class="relative h-16 w-full">
 </div>
 <div class="mb-0 px-4 md:mb-8 md:px-24">
-<router-outlet/>
+    <router-outlet/>
+</div>

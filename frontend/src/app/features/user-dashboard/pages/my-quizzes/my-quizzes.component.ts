@@ -1,104 +1,100 @@
-import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { UserServiceService } from '../../../../core/services/user-service.service';
-import { QuizServiceService } from '../../../../core/services/quiz-service.service';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { QuizServiceService } from '../../../../core/services/quiz-service.service';
+import { Router } from '@angular/router';
+
+interface UserResponse {
+  _id: string;
+  user: string;
+  quiz: {
+    _id: string;
+    title: string;
+    category: {
+      name: string;
+    };
+    difficulty: {
+      name: string;
+    };
+  };
+  responses: Array<{
+    question: string;
+    userAnswer: string;
+    isCorrect: boolean;
+    points: number;
+    _id: string;
+  }>;
+  totalScore: number;
+  status: 'started' | 'completed' | 'abandoned';
+  completedAt: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 
 @Component({
   selector: 'app-my-quizzes',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule],
   templateUrl: './my-quizzes.component.html',
-  styleUrl: './my-quizzes.component.css'
+  styleUrls: ['./my-quizzes.component.css']
 })
 export class MyQuizzesComponent implements OnInit {
-  userId: string | null = null;
-  userQuizzes: any[] = [];
-  quizzes: any[] = [];
-  combinedData: any[] = []; 
-  filteredQuizHistory: any[] = [];
+  userResponses: UserResponse[] = [];
+  isLoading = true;
+  error: string | null = null;
+  userId: string = '';
 
   constructor(
-    private userService: UserServiceService,
     private quizService: QuizServiceService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+    private router: Router
+  ) {
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId) {
+      this.userId = storedUserId;
+    }
+  }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.userId = localStorage.getItem('user_id');
-      if (this.userId) {
-        this.fetchUserQuizzes(this.userId);
-        this.filteredQuizHistory = this.combinedData;
-      }
-    }
+    this.loadUserResponses();
   }
 
-  fetchUserQuizzes(userId: string) {
-    this.userService.finduserresponsebyid(userId).subscribe({
-      next: (attempts) => {
-        this.userQuizzes = attempts;
-        const quizIds = [...new Set(this.userQuizzes.map((quiz) => quiz.quiz))]; // Ensure unique IDs
-  
-        if (quizIds.length > 0) {
-          this.quizService.fetchquizbyids(quizIds).subscribe({
-            next: (quizzes) => {
-              this.quizzes = quizzes;
-              this.mergeQuizData();
-            },
-            error: (error) => console.error('Error fetching quizzes:', error)
-          });
-        }
+  loadUserResponses() {
+    if (!this.userId) {
+      this.error = 'User ID not found';
+      this.isLoading = false;
+      return;
+    }
+
+    this.quizService.getUserResponses(this.userId).subscribe({
+      next: (responses) => {
+        this.userResponses = responses;
+        this.isLoading = false;
+        console.log(this.userResponses);
       },
-      error: (error) => console.error('Error fetching user responses:', error)
-    });
-  }
-  
-  // Merging quiz details with user attempts
-  mergeQuizData() {
-    console.log('User Quizzes:', this.userQuizzes);
-    console.log('Quizzes:', this.quizzes);
-    
-    this.combinedData = this.userQuizzes.map((attempt) => {
-      const quizDetail = this.quizzes.find((q) => {
-        const quizId = q._id.toString();
-        const attemptQuizId = attempt.quiz.toString();
-        console.log('Comparing:', quizId, attemptQuizId);
-        return quizId === attemptQuizId;
-      });
-
-      console.log('Found quiz detail:', quizDetail);
-
-      return {
-        ...attempt,
-        name: quizDetail?.title || 'Unknown Quiz',
-        category: quizDetail?.categoryId || 'Unknown Category',
-        difficulty: quizDetail?.difficultyId || 'Unknown',
-        totalQuestions: attempt.responses.length,
-        percentage: ((attempt.totalScore / attempt.responses.length) * 100).toFixed(2),
-      };
+      error: (error) => {
+        console.error('Error loading user responses:', error);
+        this.error = 'Failed to load quiz history';
+        this.isLoading = false;
+      }
     });
   }
 
-  filterQuizHistory(event: Event) {
-    const filterValue = (event.target as HTMLSelectElement).value;
-    const now = new Date();
-
-    if (filterValue === 'all') {
-      this.filteredQuizHistory = this.combinedData;
-    } else {
-      const daysToFilter = parseInt(filterValue);
-      this.filteredQuizHistory = this.combinedData.filter(attempt => {
-        const attemptDate = new Date(attempt.completedAt);
-        const daysDifference = (now.getTime() - attemptDate.getTime()) / (1000 * 3600 * 24);
-        return daysDifference <= daysToFilter;
-      });
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'completed':
+        return 'bg-green-100 text-green-800';
+      case 'started':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'abandoned':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   }
+
   
-  reviewQuiz(attempt: any) {
-    
-    console.log('Reviewing quiz', attempt);
+
+  viewQuizDetails(quizId: string) {
+    console.log(quizId);
   }
 }

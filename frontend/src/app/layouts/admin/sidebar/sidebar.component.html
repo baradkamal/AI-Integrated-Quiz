@@ -97,9 +97,10 @@
             (click)="toggleUserPanel()"
           >
             <img
-              src="https://public.readdy.ai/ai/img_res/4295a74ea26ba8fbaf46d53b1967b164.jpg"
-              class="w-8 h-8 rounded-full object-cover"
-              alt="Profile"
+              [src]="profileImage"
+              [alt]="userName"
+              class="w-8 h-8 rounded-full object-cover border-2 border-gray-200"
+              (error)="onImageError($event)"
             />
             <span class="hidden md:inline">{{userName}}</span>
             <div class="w-4 h-4 flex items-center justify-center">
@@ -110,11 +111,15 @@
           </div>
           
           <!-- User Dropdown -->
-          <div *ngIf="isUserPanelVisible" class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg z-50">
+          <div *ngIf="isUserPanelVisible" 
+               class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-1">
             <div class="py-1">
-              <a routerLink="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-              <a routerLink="/account-settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
-              <a (click)="onLogoff()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Logout</a>
+              <a routerLink="/profileadmin" 
+                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profile</a>
+              <button (click)="onLogoff()" 
+                      class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                Logout
+              </button>
             </div>
           </div>
         </div>
