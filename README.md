@@ -1,6 +1,6 @@
 # 🧠 AI-Powered Quiz App
 
-An interactive quiz web application built with the **MEAN stack (MongoDB, Express.js, Angular, Node.js)** that allows users to play quizzes and receive AI-generated feedback on their answers. Admins can generate quizzes manually, via APIs, or using Gen AI.
+An interactive quiz web application built with the **MEAN stack (MongoDB, Express.js, Angular 19, Node.js)** that allows users to play quizzes and receive AI-generated feedback on their answers. Admins can generate quizzes manually, via APIs, or using Gen AI.
 
 > 📘 **This project is developed as part of my final year internship for the MCA program at Nirma University.**
 
