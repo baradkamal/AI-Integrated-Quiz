@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserServiceService } from '../../../../core/services/user-service.service';
-import { ToastServiceService } from '../../../../core/services/toast-service.service';
+
 import { Router, RouterLink } from '@angular/router';
 import { CustomPopupComponent } from '../../../../shared/components/logout-button/custom-popup/custom-popup.component';
 import { ImageUrlService } from '../../../../core/services/image-url.service';
@@ -55,7 +55,6 @@ export class ManageUsersComponent implements OnInit {
 
   constructor(
     private userService: UserServiceService,
-    private toastService: ToastServiceService,
     private router: Router,
     private imageUrlService: ImageUrlService
   ) {}

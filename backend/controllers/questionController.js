@@ -13,18 +13,42 @@ exports.getQuestion = async (req, res) =>{
 
 exports.fetchQuestionsadmin = async (req, res) => {
     try {
-        const { category, difficulty } = req.query; // Extract query parameters
+        const { category, difficulty, type, search, page = 1, limit = 10 } = req.query;
 
         const filter = {};
+
+        
         if (category) filter.category = category;
         if (difficulty) filter.difficulty = difficulty;
+        if (type) filter.type = type;
 
-        const questions = await Question.find(filter);
-        res.status(200).json(questions); // Use standard 200 status code for success
+        
+        if (search) {
+            filter.question = { $regex: search, $options: 'i' }; 
+        }
+
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+
+        
+        const questions = await Question.find(filter)
+            .skip(skip)
+            .limit(parseInt(limit));
+
+        const totalCount = await Question.countDocuments(filter);
+        const totalPages = Math.ceil(totalCount / limit);
+
+        res.status(200).json({
+            questions,
+            totalCount,
+            page: parseInt(page),
+            limit: parseInt(limit),
+            totalPages
+        });
     } catch (error) {
-        res.status(500).json({ error: error.message }); // Return proper error message
+        res.status(500).json({ error: error.message });
     }
 };
+
 
 exports.createQuestion = async (req, res) =>{
     try{
