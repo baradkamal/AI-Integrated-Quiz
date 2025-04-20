@@ -87,8 +87,8 @@ exports.createQuestation = async (req, res) => {
       
       {
         "question": "string",
-        "options": ["option1", "option2", "option3", "option4"],
-        "answer": "correct option",
+        "incorrect_answers": ["option1", "option2", "option3"],
+        "correct_answer": "correct option",
         "explanation": "short explanation of the correct answer"
       }
       

@@ -10,6 +10,10 @@ export class QuestionService {
   
   constructor(private http: HttpClient) { }
 
+  getDatabaseQuestions(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}question`); 
+  }
+
   fetchQuestions(params: {
     page?: number;
     limit?: number;

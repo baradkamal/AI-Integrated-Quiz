@@ -1,1 +1,334 @@
-<p>create-new-questions works!</p>
+<!-- Main Container -->
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+
+        <!-- Toggle button with changing text and SVG -->
+
+  
+ 
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Create New Questions</h1>
+                <div> 
+                    <span class="mt-2 text-sm text-gray-600">Add new questions to your quiz database </span>
+                     <span class="text-sm text-gray-600" *ngIf="activeDiv === 'form2'" >useing Gen-AI</span>
+                     <span class="mt-2 text-sm text-gray-600" *ngIf="activeDiv === 'form1'" >useing open-trivia api</span>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-3 justify-end">
+                <div (click)="toggleDiv()" >
+                    <div *ngIf="activeDiv === 'form1'" class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap">
+                      <svg fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 animate-bounce " viewBox="0 0 16 16">
+                                        
+                        <path
+                            d="M16 8.016A8.522 8.522 0 008.016 16h-.032A8.521 8.521 0 000 8.016v-.032A8.521 8.521 0 007.984 0h.032A8.522 8.522 0 0016 7.984v.032z"
+                            fill="url(#prefix__paint0_radial_980_20147)" />
+                        <defs>
+                            <radialGradient id="prefix__paint0_radial_980_20147" cx="0" cy="0" r="1"
+                                gradientUnits="userSpaceOnUse"
+                                gradientTransform="matrix(16.1326 5.4553 -43.70045 129.2322 1.588 6.503)">
+                                <stop offset=".067" stop-color="#9168C0" />
+                                <stop offset=".343" stop-color="#5684D1" />
+                                <stop offset=".672" stop-color="#1BA1E3" />
+                            </radialGradient>
+                        </defs>
+                    </svg>
+                    Add Question with Gen-AI
+                </div>
+                    <div *ngIf="activeDiv === 'form2'" class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap">
+                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 animate-bounce " viewBox="0 0 16 16">
+                                        
+                            <path
+                            d="M5.625 3.75a2.625 2.625 0 1 0 0 5.25h12.75a2.625 2.625 0 0 0 0-5.25H5.625ZM3.75 11.25a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5H3.75ZM3 15.75a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75ZM3.75 18.75a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5H3.75Z" 
+                                fill="url(#prefix__paint0_radial_980_20147)" />
+                            <defs>
+                                <radialGradient id="prefix__paint0_radial_980_20147" cx="0" cy="0" r="1"
+                                    gradientUnits="userSpaceOnUse"
+                                    gradientTransform="matrix(16.1326 5.4553 -43.70045 129.2322 1.588 6.503)">
+                                    <stop offset=".067" stop-color="#9168C0" />
+                                    <stop offset=".343" stop-color="#5684D1" />
+                                    <stop offset=".672" stop-color="#1BA1E3" />
+                                </radialGradient>
+                            </defs>
+                        </svg>
+                        Add Questions open-trivia
+                    </div>
+                </div>
+
+                <button (click)="openPopup()"
+                    class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 " viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M3 7C3 4.79086 4.79086 3 7 3H17C19.2091 3 21 4.79086 21 7V17C21 19.2091 19.2091 21 17 21H7C4.79086 21 3 19.2091 3 17V7Z"
+                            clip-rule="evenodd" />
+                        <path
+                            d="M16.2739 11.1377C16.6644 10.7472 16.6644 10.114 16.2739 9.7235L14.4823 7.9319C14.0918 7.54137 13.4586 7.54138 13.0681 7.9319L8.96106 12.0389L8.34768 15.7477C8.3365 15.8154 8.39516 15.874 8.4628 15.8627L12.1669 15.2448L16.2739 11.1377Z"
+                            stroke="#3949AB" stroke-width="2" />
+                    </svg>
+                    Add Question Manually
+                </button>
+            </div>
+        </div>
+        
+        <!-- Filter Options Section -->
+        <div *ngIf="activeDiv === 'form1'">
+            <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                <p class="text-sm text-gray-600">Add open trivia questions (online api) to your quiz database</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <!-- Category Dropdown -->
+                    <select [(ngModel)]="selectedCategory"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Select Category</option>
+        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+    </select>
+
+    <!-- Type Dropdown -->
+                    <select [(ngModel)]="selectedType"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="multiple">Multiple Choice</option>
+                        <option value="boolean">True / False</option>
+                    </select>
+        
+                    <!-- Get Questions by Category -->
+                    <button (click)="GetQuestionwithcategory()"
+                        class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Get Questions
+                    </button>
+        
+                    <button (click)="GetQuestion()"
+                        class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Get Random API Question
+                    </button>
+                </div>
+            </div>
+          </div>
+          
+          <!-- Second form -->
+          <div *ngIf="activeDiv === 'form2'">
+            <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+                <p class="text-sm text-gray-600">Add Gen-AI generated questions to your questation database</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <!-- Category Dropdown -->
+                    <select [(ngModel)]="selectedCategory"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Select Category</option>
+                        <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
+                    </select>
+                
+                    <!-- Type Dropdown -->
+                    <select [(ngModel)]="selectedType"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <option value="multiple">Multiple Choice</option>
+        <option value="boolean">True / False</option>
+    </select>
+
+                    <!-- Number of Questions Input -->
+                    <input type="number" [(ngModel)]="numberofquestation"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Number of Questions" />
+                
+                    <!-- Difficulty Dropdown -->
+                    <select [(ngModel)]="selecteddifficulty"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Select Difficulty</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                
+                    <!-- Get Questions by Category -->
+                    <button (click)="GetGenaiquestation()"
+                        class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Get Questions
+                    </button>
+                </div>
+                
+            </div>
+          </div>
+
+        <!-- API Questions Table -->
+        <div class="mb-8 overflow-x-auto" *ngIf="QuestionList.length > 0">
+            <div class="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                No</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                 Question</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Difficulty</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Correct Answer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Incorrect Answers</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Action</th>
+            </tr>
+        </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr *ngFor="let item of QuestionList; let i = index" class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ i + 1 }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900" [innerHTML]="item.question"></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span [ngClass]="{
+                                    'px-2 py-1 text-xs font-medium rounded-full': true,
+                                    'bg-green-100 text-green-800': item.difficulty === 'easy',
+                                    'bg-yellow-100 text-yellow-800': item.difficulty === 'medium',
+                                    'bg-red-100 text-red-800': item.difficulty === 'hard'
+                                }">
+                                    {{ item.difficulty }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-900" >{{ item.category }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900" [innerHTML]="item.correct_answer"></td>
+                            <td class="px-6 py-4 text-sm text-gray-900">
+                                <div class="flex flex-wrap gap-1">
+                                    <span *ngFor="let answer of item.incorrect_answers"
+                                        class="inline-block px-2 py-1 bg-gray-100 rounded text-xs">
+                                        {{ answer }}
+                                    </span>
+                                </div>
+                </td>
+                            <td class="px-6 py-2 whitespace-nowrap text-sm">
+                                <button (click)="postQuestion(item)"
+                                    class="flex items-center px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    
+                                </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        </div>
+    </div>
+</div>
+
+<app-custom-popup *ngIf="showPopup" title="Add Question Details" confirmButtonText="Submit" (close)="showPopup = false"
+    (save)="postMannualQuestation()">
+
+    <div class="max-w-3xl mx-auto p-4  overflow-auto">
+        <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Difficulty -->
+                <div>
+                    <label for="difficulty" class="block text-sm font-medium text-gray-700 mb-1">Difficulty<span
+                            class="text-red-500">*</span></label>
+                    <select [(ngModel)]="Questionobj.difficulty" name="difficulty" required #difficultyField="ngModel"
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 outline-none transition">
+                        <option value="">Select Difficulty</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                    <div *ngIf="difficultyField.touched && !Questionobj.difficulty" class="text-red-500 text-sm mt-1">
+                        Difficulty is required</div>
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Category<span
+                            class="text-red-500">*</span></label>
+                    <select [(ngModel)]="Questionobj.category" name="category" required #categoryField="ngModel"
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 outline-none transition">
+                        <option value="">Select Category</option>
+                        <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+                    </select>
+                    <div *ngIf="categoryField.touched && !Questionobj.category" class="text-red-500 text-sm mt-1">
+                        Category is required</div>
+                </div>
+            </div>
+
+            <!-- Question -->
+            <div>
+                <label for="question" class="block text-sm font-medium text-gray-700 mb-1">Question<span
+                        class="text-red-500">*</span></label>
+                <textarea [(ngModel)]="Questionobj.question" name="question" rows="3" required #questionField="ngModel"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 outline-none transition"
+                    placeholder="Enter your question here...">
+                </textarea>
+                <div *ngIf="questionField.touched && !Questionobj.question" class="text-red-500 text-sm mt-1">Question
+                    is required</div>
+            </div>
+
+            <!-- Correct Answer -->
+            <div>
+                <label for="correct_answer" class="block text-sm font-medium text-gray-700 mb-1">Correct Answer<span
+                        class="text-red-500">*</span></label>
+                <input type="text" [(ngModel)]="Questionobj.correct_answer" name="correct_answer" required
+                    #correctAnswerField="ngModel" placeholder="Correct answer"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 transition">
+                <div *ngIf="correctAnswerField.touched && !Questionobj.correct_answer"
+                    class="text-red-500 text-sm mt-1">Correct answer is required</div>
+                <div *ngIf="correctAnswerField.touched && isDuplicateAnswer(-1)" class="text-red-500 text-sm mt-1">
+                    Correct answer cannot be the same as any incorrect answer</div>
+            </div>
+
+            <!-- Incorrect Answers -->
+            <div>
+                <h3 class="block text-sm font-medium text-gray-700 mb-1">Incorrect Answers<span
+                        class="text-red-500">*</span></h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Answer 1 -->
+                    <div>
+                        <input type="text" [(ngModel)]="Questionobj.incorrect_answers[0]" name="incorrect_answer_1"
+                            required #incorrectAnswer1="ngModel" placeholder="Incorrect answer 1"
+                            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 transition">
+                        <div *ngIf="incorrectAnswer1.touched && !Questionobj.incorrect_answers[0]"
+                            class="text-red-500 text-sm mt-1">Incorrect answer 1 is required</div>
+                        <div *ngIf="incorrectAnswer1.touched && isDuplicateAnswer(0)" class="text-red-500 text-sm mt-1">
+                            This answer cannot be the same as any other answer</div>
+                    </div>
+                    <!-- Answer 2 -->
+                    <div>
+                        <input type="text" [(ngModel)]="Questionobj.incorrect_answers[1]" name="incorrect_answer_2"
+                            required #incorrectAnswer2="ngModel" placeholder="Incorrect answer 2"
+                            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 transition">
+                        <div *ngIf="incorrectAnswer2.touched && !Questionobj.incorrect_answers[1]"
+                            class="text-red-500 text-sm mt-1">Incorrect answer 2 is required</div>
+                        <div *ngIf="incorrectAnswer2.touched && isDuplicateAnswer(1)" class="text-red-500 text-sm mt-1">
+                            This answer cannot be the same as any other answer</div>
+                    </div>
+                    <!-- Answer 3 -->
+                    <div>
+                        <input type="text" [(ngModel)]="Questionobj.incorrect_answers[2]" name="incorrect_answer_3"
+                            required #incorrectAnswer3="ngModel" placeholder="Incorrect answer 3"
+                            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-200 transition">
+                        <div *ngIf="incorrectAnswer3.touched && !Questionobj.incorrect_answers[2]"
+                            class="text-red-500 text-sm mt-1">Incorrect answer 3 is required</div>
+                        <div *ngIf="incorrectAnswer3.touched && isDuplicateAnswer(2)" class="text-red-500 text-sm mt-1">
+                            This answer cannot be the same as any other answer</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</app-custom-popup>
