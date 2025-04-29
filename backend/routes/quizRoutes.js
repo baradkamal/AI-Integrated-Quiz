@@ -1,6 +1,6 @@
 const express = require('express');
 const {createQuiz, getQuiz, deleteQuiz, updateQuiz, getQuizbyid,getQuizzesByIds,getQuizadmin} = require('../controllers/quizController');
-const {createAdvanceQuiz, getAllAdvanceQuizzes, getAdvanceQuizById, deleteAdvanceQuiz,getAdminAdvanceQuiz,updateAdvanceQuiz,patchAdvanceQuiz} = require('../controllers/advanceQuizController');
+const {createAdvanceQuiz, getAllAdvanceQuizzes, getAdvanceQuizById, deleteAdvanceQuiz,getAdminAdvanceQuiz,updateAdvanceQuiz,patchAdvanceQuiz,getAllAdvanceQuizzesUser} = require('../controllers/advanceQuizController');
 
 
 const router = express.Router();
@@ -14,8 +14,9 @@ router.delete("/quiz/:id",deleteQuiz);
 router.get("/quiz/admin", getQuizadmin);
 
 // advance quiz
-router.post("/Advancequiz",createAdvanceQuiz);
-router.get("/Advancequiz", getAllAdvanceQuizzes);     
+router.post("/Advancequiz",createAdvanceQuiz); 
+router.get("/Advancequiz", getAllAdvanceQuizzes);    
+router.get("/Advancequizuser", getAllAdvanceQuizzesUser);    
 router.get("/advancequiz/:id", getAdvanceQuizById);   
 router.delete("/advancequiz/:id", deleteAdvanceQuiz);
 router.put("/advancequiz/:id", updateAdvanceQuiz);

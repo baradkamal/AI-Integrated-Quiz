@@ -104,9 +104,19 @@ export class CreateNewQuizComponent implements OnInit {
 
       if (category && difficulty) {
         this.questionService.fetchQuestionAdmin(category.name, difficulty.name).subscribe({
-          next: (questions) => {
-            console.log('Fetched questions:', questions); // Debug log
-            this.availableQuestions = questions;
+          next: (response: any) => {
+            console.log('Fetched questions:', response); // Debug log
+            
+            // Check if response is an object with a questions property
+            if (response && response.questions && Array.isArray(response.questions)) {
+              this.availableQuestions = response.questions;
+            } else if (Array.isArray(response)) {
+              this.availableQuestions = response;
+            } else {
+              this.availableQuestions = [];
+              this.error = 'Invalid response format from server';
+            }
+            
             this.showQuestionSelector = true;
             this.loading = false;
           },
@@ -149,6 +159,12 @@ export class CreateNewQuizComponent implements OnInit {
 
   removeQuestion(index: number) {
     this.questions.removeAt(index);
+  }
+
+  // Get question text by ID for display in the selected questions list
+  getQuestionText(questionId: string): string {
+    const question = this.availableQuestions.find(q => q._id === questionId);
+    return question ? question.question : `Question ID: ${questionId}`;
   }
 
   onSubmit() {

@@ -4,43 +4,47 @@
 
         <!-- Toggle button with changing text and SVG -->
 
-  
- 
+
+
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Create New Questions</h1>
-                <div> 
+                <div>
                     <span class="mt-2 text-sm text-gray-600">Add new questions to your quiz database </span>
-                     <span class="text-sm text-gray-600" *ngIf="activeDiv === 'form2'" >useing Gen-AI</span>
-                     <span class="mt-2 text-sm text-gray-600" *ngIf="activeDiv === 'form1'" >useing open-trivia api</span>
+                    <span class="text-sm text-gray-600" *ngIf="activeDiv === 'form2'">useing Gen-AI</span>
+                    <span class="mt-2 text-sm text-gray-600" *ngIf="activeDiv === 'form1'">useing open-trivia api</span>
                 </div>
             </div>
             <div class="flex flex-wrap gap-3 justify-end">
-                <div (click)="toggleDiv()" >
-                    <div *ngIf="activeDiv === 'form1'" class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap">
-                      <svg fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 animate-bounce " viewBox="0 0 16 16">
-                                        
-                        <path
-                            d="M16 8.016A8.522 8.522 0 008.016 16h-.032A8.521 8.521 0 000 8.016v-.032A8.521 8.521 0 007.984 0h.032A8.522 8.522 0 0016 7.984v.032z"
-                            fill="url(#prefix__paint0_radial_980_20147)" />
-                        <defs>
-                            <radialGradient id="prefix__paint0_radial_980_20147" cx="0" cy="0" r="1"
-                                gradientUnits="userSpaceOnUse"
-                                gradientTransform="matrix(16.1326 5.4553 -43.70045 129.2322 1.588 6.503)">
-                                <stop offset=".067" stop-color="#9168C0" />
-                                <stop offset=".343" stop-color="#5684D1" />
-                                <stop offset=".672" stop-color="#1BA1E3" />
-                            </radialGradient>
-                        </defs>
-                    </svg>
-                    Add Question with Gen-AI
-                </div>
-                    <div *ngIf="activeDiv === 'form2'" class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap">
-                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 animate-bounce " viewBox="0 0 16 16">
-                                        
+                <div (click)="toggleDiv()">
+                    <div *ngIf="activeDiv === 'form1'"
+                        class="flex items-center px-4 py-2 bg-gray-600 rounded-full text-white hover:bg-indigo-700 whitespace-nowrap">
+                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 animate-pulse "
+                            viewBox="0 0 16 16">
+
                             <path
-                            d="M5.625 3.75a2.625 2.625 0 1 0 0 5.25h12.75a2.625 2.625 0 0 0 0-5.25H5.625ZM3.75 11.25a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5H3.75ZM3 15.75a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75ZM3.75 18.75a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5H3.75Z" 
+                                d="M16 8.016A8.522 8.522 0 008.016 16h-.032A8.521 8.521 0 000 8.016v-.032A8.521 8.521 0 007.984 0h.032A8.522 8.522 0 0016 7.984v.032z"
+                                fill="url(#prefix__paint0_radial_980_20147)" />
+                            <defs>
+                                <radialGradient id="prefix__paint0_radial_980_20147" cx="0" cy="0" r="1"
+                                    gradientUnits="userSpaceOnUse"
+                                    gradientTransform="matrix(16.1326 5.4553 -43.70045 129.2322 1.588 6.503)">
+                                    <stop offset=".067" stop-color="#9168C0" />
+                                    <stop offset=".343" stop-color="#5684D1" />
+                                    <stop offset=".672" stop-color="#1BA1E3" />
+                                </radialGradient>
+                            </defs>
+                        </svg>
+                        Add Question with Gen-AI
+                    </div>
+                    <div *ngIf="activeDiv === 'form2'"
+                        class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap">
+                        <svg fill="none" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 animate-bounce "
+                            viewBox="0 0 16 16">
+
+                            <path
+                                d="M5.625 3.75a2.625 2.625 0 1 0 0 5.25h12.75a2.625 2.625 0 0 0 0-5.25H5.625ZM3.75 11.25a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5H3.75ZM3 15.75a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75ZM3.75 18.75a.75.75 0 0 0 0 1.5h16.5a.75.75 0 0 0 0-1.5H3.75Z"
                                 fill="url(#prefix__paint0_radial_980_20147)" />
                             <defs>
                                 <radialGradient id="prefix__paint0_radial_980_20147" cx="0" cy="0" r="1"
@@ -71,26 +75,26 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Filter Options Section -->
         <div *ngIf="activeDiv === 'form1'">
             <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
                 <p class="text-sm text-gray-600">Add open trivia questions (online api) to your quiz database</p>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-    <!-- Category Dropdown -->
+                    <!-- Category Dropdown -->
                     <select [(ngModel)]="selectedCategory"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Select Category</option>
-        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
-    </select>
+                        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+                    </select>
 
-    <!-- Type Dropdown -->
+                    <!-- Type Dropdown -->
                     <select [(ngModel)]="selectedType"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="multiple">Multiple Choice</option>
                         <option value="boolean">True / False</option>
                     </select>
-        
+
                     <!-- Get Questions by Category -->
                     <button (click)="GetQuestionwithcategory()"
                         class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap cursor-pointer">
@@ -102,7 +106,7 @@
                         </svg>
                         Get Questions
                     </button>
-        
+
                     <button (click)="GetQuestion()"
                         class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
@@ -115,32 +119,32 @@
                     </button>
                 </div>
             </div>
-          </div>
-          
-          <!-- Second form -->
-          <div *ngIf="activeDiv === 'form2'">
+        </div>
+
+        <!-- Second form -->
+        <div *ngIf="activeDiv === 'form2'">
             <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
                 <p class="text-sm text-gray-600">Add Gen-AI generated questions to your questation database</p>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
                     <!-- Category Dropdown -->
                     <select [(ngModel)]="selectedCategory"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Select Category</option>
                         <option *ngFor="let cat of categories" [value]="cat.name">{{ cat.name }}</option>
                     </select>
-                
+
                     <!-- Type Dropdown -->
                     <select [(ngModel)]="selectedType"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-        <option value="multiple">Multiple Choice</option>
-        <option value="boolean">True / False</option>
-    </select>
+                        <option value="multiple">Multiple Choice</option>
+                        <option value="boolean">True / False</option>
+                    </select>
 
                     <!-- Number of Questions Input -->
                     <input type="number" [(ngModel)]="numberofquestation"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Number of Questions" />
-                
+
                     <!-- Difficulty Dropdown -->
                     <select [(ngModel)]="selecteddifficulty"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -149,9 +153,9 @@
                         <option value="medium">Medium</option>
                         <option value="hard">Hard</option>
                     </select>
-                
+
                     <!-- Get Questions by Category -->
-                    <button (click)="GetGenaiquestation()"
+                    <button *ngIf="!isloading" (click)="GetGenaiquestation()"
                         class="flex items-center px-4 py-2 bg-indigo-600 rounded-lg text-white hover:bg-indigo-700 whitespace-nowrap cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
                             fill="currentColor">
@@ -161,10 +165,24 @@
                         </svg>
                         Get Questions
                     </button>
+
+                    <button *ngIf="isloading" type="button" disabled
+                        class="flex items-center px-4 py-2 bg-indigo-500 rounded-lg text-white cursor-not-allowed opacity-70">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 animate-spin" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Processing…
+                    </button>
+
                 </div>
-                
+
             </div>
-          </div>
+        </div>
 
         <!-- API Questions Table -->
         <div class="mb-8 overflow-x-auto" *ngIf="QuestionList.length > 0">
@@ -175,7 +193,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 No</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                 Question</th>
+                                Question</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Difficulty</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -186,8 +204,8 @@
                                 Incorrect Answers</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Action</th>
-            </tr>
-        </thead>
+                        </tr>
+                    </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <tr *ngFor="let item of QuestionList; let i = index" class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ i + 1 }}</td>
@@ -202,7 +220,7 @@
                                     {{ item.difficulty }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-900" >{{ item.category }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900">{{ item.category }}</td>
                             <td class="px-6 py-4 text-sm text-gray-900" [innerHTML]="item.correct_answer"></td>
                             <td class="px-6 py-4 text-sm text-gray-900">
                                 <div class="flex flex-wrap gap-1">
@@ -211,7 +229,7 @@
                                         {{ answer }}
                                     </span>
                                 </div>
-                </td>
+                            </td>
                             <td class="px-6 py-2 whitespace-nowrap text-sm">
                                 <button (click)="postQuestion(item)"
                                     class="flex items-center px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1">
@@ -221,13 +239,13 @@
                                             d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    
+
                                 </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,199 @@
+<div class="container mx-auto px-4 py-6">
+  <!-- Header Section -->
+  <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Quiz Review</h1>
+      <p class="mt-2 text-gray-600">Review your answers and performance</p>
+    </div>
+    <button (click)="goBack()" class="px-3 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+      </svg>
+      Back to My Quizzes
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+    <span class="block sm:inline">{{ error }}</span>
+  </div>
+
+  <!-- Main Content - 2 Column Layout -->
+  <div *ngIf="!isLoading && selectedResponse" class="bg-white rounded-lg shadow-sm">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+      <!-- Left column - Quiz summary -->
+      <div class="lg:col-span-1">
+        <div class="bg-indigo-50 p-5 rounded-lg">
+          <h3 class="text-lg font-medium mb-4 border-b border-indigo-100 pb-2">Quiz Summary</h3>
+          <div class="space-y-4">
+            <div>
+              <p class="text-sm text-gray-600">Quiz Title</p>
+              <p class="font-medium">{{ selectedResponse.quiz.title }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Category</p>
+              <p class="font-medium">{{ selectedResponse.quiz.category.name }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Difficulty</p>
+              <p class="font-medium">{{ selectedResponse.quiz.difficulty.name }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Score</p>
+              <p class="font-medium">{{ selectedResponse.totalScore }} points</p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Correct Answers</p>
+              <p class="font-medium">{{ getTotalCorrectAnswers(selectedResponse.responses) }} / {{ selectedResponse.responses.length }}</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div class="bg-indigo-600 h-2.5 rounded-full"
+                [style.width.%]="getScorePercentage(selectedResponse.totalScore, selectedResponse.responses.length)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column - Questions and Answers OR AI Explanation -->
+      <div class="lg:col-span-2">
+        <!-- Questions and answers -->
+        <div *ngIf="activeDiv === 'form1'">
+          <h3 class="text-lg font-medium mb-5 border-b pb-2">Questions & Answers</h3>
+
+          <div class="space-y-6">
+            <div *ngFor="let response of selectedResponse.responses; let i = index"
+              class="mb-6 pb-5 border-b border-gray-100 last:border-0 last:pb-0">
+              <div class="flex items-start gap-3">
+                <div class="flex-shrink-0 bg-indigo-100 text-indigo-800 rounded-full w-8 h-8 flex items-center justify-center">
+                  <span class="text-sm font-medium">{{ i + 1 }}</span>
+                </div>
+                <div class="flex-grow">
+                  <p class="font-medium mb-4 text-gray-800">{{ response.question.question }}</p>
+
+                  <div class="pl-3 border-l-2 space-y-3"
+                    [ngClass]="{'border-green-500': response.isCorrect, 'border-red-500': !response.isCorrect}">
+                    <div>
+                      <p class="text-sm text-gray-600 mb-1">Your answer:</p>
+                      <p class="font-medium" [ngClass]="getAnswerStatusClass(response.isCorrect)">
+                        {{ response.userAnswer }}
+                      </p>
+                    </div>
+
+                    <div *ngIf="!response.isCorrect">
+                      <p class="text-sm text-gray-600 mb-1">Correct answer:</p>
+                      <p class="font-medium" [ngClass]="getAnswerStatusClass(response.correctAnswer)">
+                        {{ response.correctAnswer }}
+                      </p>
+                    </div>
+
+                    <div *ngIf="!response.isCorrect" class="mt-4 pt-3">
+                      <button (click)="reviewAnswer(i)"
+                        class="px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium shadow hover:bg-indigo-700 transition-all">
+                        Get AI Explanation
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Explanation View -->
+        <div *ngIf="activeDiv === 'form2'">
+          <div class="mb-4 flex items-center justify-between">
+            <h3 class="text-lg font-medium">AI Review</h3>
+            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">Analysis</span>
+          </div>
+      
+          <!-- Content container -->
+          <div>
+            <!-- Loading state -->
+            <div *ngIf="aiReviewData?.loading" class="flex justify-center items-center py-12">
+              <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
+            </div>
+            
+            <!-- Error state -->
+            <div *ngIf="aiReviewData?.error" class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+              <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <p class="text-red-700">{{ aiReviewData.message || 'Failed to get AI explanation' }}</p>
+              </div>
+            </div>
+            
+            <!-- Success state -->
+            <div *ngIf="aiReviewData && !aiReviewData.loading && !aiReviewData.error" class="space-y-6">
+              
+              <!-- Summary in a highlighted box -->
+              <div *ngIf="aiReviewData.explanation?.summary" 
+                  class="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                <div class="flex items-center mb-2">
+                  <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mr-2">
+                    <svg class="h-4 w-4 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                      <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <h3 class="text-blue-800 font-medium">Summary</h3>
+                </div>
+                <p class="text-gray-700 pl-10">{{ aiReviewData.explanation.summary }}</p>
+              </div>
+              
+              <!-- Dynamic Sections -->
+              <div *ngIf="aiReviewData.explanation?.sections?.length">
+                <div class="grid grid-cols-1 gap-4">
+                  <div *ngFor="let section of aiReviewData.explanation.sections" 
+                      class="bg-gray-50 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <h4 class="text-indigo-700 font-semibold mb-2 flex items-center">
+                      <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                      {{ section.title }}
+                    </h4>
+                    <p class="text-gray-700">{{ section.content }}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Related Concepts with visual separation -->
+              <div *ngIf="aiReviewData.explanation?.relatedConcepts?.length" 
+                  class="border-t border-gray-100 pt-4">
+                <h4 class="font-medium text-sm mb-3 text-gray-700 flex items-center">
+                  <svg class="h-4 w-4 text-blue-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                  Related Concepts
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  <span *ngFor="let tag of aiReviewData.explanation.relatedConcepts"
+                    class="bg-gradient-to-r from-blue-100 to-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs flex items-center">
+                    <span class="w-1 h-1 bg-indigo-400 rounded-full mr-1"></span>
+                    {{ tag }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Back button -->
+          <div class="mt-6 pt-4 border-t border-gray-100 flex justify-end">
+            <button (click)="toggleDiv()"
+              class="px-4 py-2 rounded-md bg-indigo-600 text-white text-sm font-medium shadow hover:bg-indigo-700 transition-all">
+              Back to questions
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

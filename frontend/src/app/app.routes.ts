@@ -17,6 +17,8 @@ import { CreateNewQuizComponent } from './features/admin-dashboard/components/cr
 import { AddnewuserComponent } from './features/admin-dashboard/components/addnewuser/addnewuser.component';
 import { ManageQuestationComponent } from './features/admin-dashboard/components/manage-questation/manage-questation.component';
 import { CreateNewQuestionsComponent } from './features/admin-dashboard/components/create-new-questions/create-new-questions.component';
+import { ReviewQuizComponent } from './features/user-dashboard/pages/review-quiz/review-quiz.component';
+import { GenrateGenaiQuizComponent } from './features/user-dashboard/pages/genrate-genai-quiz/genrate-genai-quiz.component';
 
 export const routes: Routes = [
     {path:'', component:UserLayoutComponent,canActivate: [authGuard],
@@ -26,6 +28,8 @@ export const routes: Routes = [
             {path:'myquizzes', component:MyQuizzesComponent},
             {path:'leaderboard', component:LeaderboardComponent},
             {path:'profile', component:UserProfileComponent},
+            {path:'reviewquiz/:id', component:ReviewQuizComponent},
+            {path:'genaiquiz', component:GenrateGenaiQuizComponent},
         ],
     },
     {path:'', component:AdminLayoutComponent,canActivate: [authGuard],

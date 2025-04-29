@@ -121,10 +121,14 @@
         <!-- Selected Questions -->
         <div formArrayName="questions" class="p-6 bg-gray-50 rounded-lg mb-8">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-medium text-gray-900">Selected Questions</h3>
+                <h3 class="text-lg font-medium text-gray-900">Selected Questions ({{ questions.length }})</h3>
             </div>
 
-            <div *ngFor="let question of questions.controls; let i=index" [formGroupName]="i" class="bg-white rounded-lg border p-4 mb-4">
+            <div *ngIf="questions.length === 0" class="text-center py-6 text-gray-500">
+                No questions selected yet. Select questions from the available questions list above.
+            </div>
+
+            <div *ngFor="let questionControl of questions.controls; let i=index" class="bg-white rounded-lg border p-4 mb-4">
                 <div class="flex justify-between mb-2">
                     <h4 class="font-medium">Question {{ i + 1 }}</h4>
                     <div class="flex space-x-2">
@@ -135,10 +139,11 @@
                 </div>
 
                 <div class="mb-4">
-                    <p class="text-sm text-gray-700">{{ question.get('question')?.value }}</p>
+                    <p class="text-sm text-gray-700">
+                        <!-- Find and display the corresponding question text -->
+                        {{ getQuestionText(questionControl.value) }}
+                    </p>
                 </div>
-
-                
             </div>
         </div>
 

@@ -4,6 +4,7 @@ import { UserServiceService } from '../../../core/services/user-service.service'
 import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { ImageUrlService } from '../../../core/services/image-url.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,7 +19,7 @@ export class SidebarComponent {
   isUserPanelVisible = false;
   userId: string | null = null;
   userName: string = '';
-  profileImage: string = '/assets/images/default-profile.png'; // Default image
+  profileImage: string = environment.defaultProfileImage;
 
   constructor(
     private eRef: ElementRef,
@@ -56,7 +57,7 @@ export class SidebarComponent {
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     if (img) {
-      img.src = '/assets/images/default-profile.png';
+      img.src = environment.defaultProfileImage;
     }
   }
 
@@ -66,13 +67,14 @@ export class SidebarComponent {
   }
   
   checkScreenSize() {
-    this.isMobile = window.innerWidth < 1024; 
-    
-    if (this.isMobile && this.isOpen) {
-      this.isOpen = false;
-    } else if (!this.isMobile && !this.isOpen) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth < 1024; 
       
-      this.isOpen = true;
+      if (this.isMobile && this.isOpen) {
+        this.isOpen = false;
+      } else if (!this.isMobile && !this.isOpen) {
+        this.isOpen = true;
+      }
     }
   }
 

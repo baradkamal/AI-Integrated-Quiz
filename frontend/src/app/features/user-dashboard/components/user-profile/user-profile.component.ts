@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserServiceService } from '../../../../core/services/user-service.service';
 import { ImageUrlService } from '../../../../core/services/image-url.service';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-user-profile',
@@ -14,7 +15,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class UserProfileComponent implements OnInit {
   currentUserId: string | null = null;
   userData: any;
-  profileImageUrl: string = '/assets/images/default-profile.png';
+  profileImageUrl: string = environment.defaultProfileImage;
 
   constructor(
     private userService: UserServiceService,
@@ -48,7 +49,7 @@ export class UserProfileComponent implements OnInit {
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     if (img) {
-      img.src = '/assets/images/default-profile.png';
+      img.src = environment.defaultProfileImage;
     }
   }
 }

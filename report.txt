@@ -1,0 +1,333 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+
+\usepackage{graphicx}
+
+\usepackage{setspace}
+
+\usepackage{times}
+
+\usepackage{array}
+
+\usepackage{ragged2e}
+
+
+
+% Remove page numbers for these initial pages
+\pagestyle{empty}
+\pagenumbering{roman}
+
+
+\begin{document}
+
+% First Page (Matching the first image)
+\begin{center}
+    \vspace*{3cm} % Adjust spacing as needed
+
+    {\Large\textbf{<<Internship Report Title>>}} % Title as in the first image
+
+    \vspace{3cm} % Adjust spacing as needed
+
+    {By}
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+    \textbf{[NAME OF STUDENT\\
+    STUDENT ROLL NO.]}
+
+    \vfill
+
+    \includegraphics[width=2.6402in,height=1.4035in]{image/nirma_logo.png} % Use the original image dimensions or adjust as needed
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+   
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+    {\textbf{DEPARTMENT OF COMPUTER SCIENCE \& ENGINEERING\\
+    Ahmedabad 382481}}
+\end{center}
+
+\newpage % Start a new page
+
+% Second Page (Matching the second image)
+\begin{center}
+    \vspace*{2cm} % Adjust spacing as needed
+
+    {\Large\textbf{[PROJECT TITLE]}} % Project Title from the second image
+
+    \vspace{1.5cm} % Adjust spacing as needed
+
+    {Internship Report}
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+    Submitted in partial fulfillment of the requirements
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+    For the degree of
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+    \textbf{Master of Computer Application} % Degree
+
+    \vspace{2cm} % Adjust spacing as needed
+
+    By
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+    \textbf{[NAME OF STUDENT\\
+    STUDENT ROLL NO.]} % Student details
+
+    \vspace{1.5cm} % Adjust spacing as needed
+
+    Guided By\\ % Guided By
+    \textbf{[ NAME OF GUIDE ]}\\ % Guide name
+    \textbf{[DEPARTMENT OF COMPUTER SCIENCE \& ENGINEERING]} % Guide department
+
+    \vfill
+
+    \includegraphics[width=2.6402in,height=1.4035in]{image/nirma_logo.png} % Logo
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+
+    \vspace{0.5cm} % Adjust spacing as needed
+
+    {\textbf{DEPARTMENT OF COMPUTER SCIENCE \& ENGINEERING\\
+    Ahmedabad 382481}} % Department address
+\end{center}
+\cleardoublepage
+\pagenumbering{roman}
+\setcounter{page}{2}
+\pagestyle{plain}
+\newpage
+
+% Certificate page
+\begin{center}
+    \vspace*{2cm}
+    \includegraphics[width=2.6402in,height=1.4035in]{image/nirma_logo.png}
+    
+    \vspace{1cm}
+    
+    {\Large\textbf{CERTIFICATE}}
+\end{center}
+
+\vspace{1cm}
+\onehalfspacing
+This is to certify that the Internship project entitled AI-Integrated-Quiz submitted by Barad Kamal (23mca003) towards the partial fulfillment of the requirements for the degree of Master of Computer Application of Nirma University is the record of work carried out by him/her under my supervision and guidance. In my opinion, the submitted work has reached a level required for being accepted for examination.
+
+\vspace{4cm}
+
+\noindent
+\begin{tabular}{p{7.5cm}p{7.5cm}}
+Dr. Deepika Shukla & Dr. Sudeep Tanwar,\\
+Assistant. Professor & Professor and HOD,\\
+Computer Science and Engineering Dept., & Computer Science and Engineering Dept.,\\
+Institute of Technology, & Institute of Technology,\\
+Nirma University, & Nirma University,\\
+Ahmedabad & Ahmedabad\\
+\end{tabular}
+
+\newpage
+\begin{center}
+    \vspace*{2cm}
+    \Large\textbf{Statement of Originality}
+\end{center}
+
+\vspace{1cm}
+\noindent
+I, \underline{\hspace{2.5cm}} , Roll no: \underline{\hspace{2.5cm}}, give undertaking that the Internship Project entitled ``\textbf{Project title}'' submitted by me, towards the partial fulfilment of the requirements for the degree of Master of Computer Application of Institute of Technology, Nirma University, Ahmedabad, contains no material that has been awarded for any degree or diploma in any university or school in any territory to the best of my knowledge. It is the original work carried out by me and I give assurance that no attempt of plagiarism has been made. It contains no material that is previously published or written, except where reference has been made. I understand that in the event of any similarity found subsequently with any published work or any dissertation work elsewhere; it will result in severe disciplinary action.
+
+\vspace{3cm}
+\noindent
+Signature of Student
+
+\vspace{1cm}
+\noindent
+Date:
+
+\vspace{1cm}
+\noindent
+Place:
+\hfill Endorsed by
+
+\vspace{1cm}
+\hfill Project Guide Name
+
+\vspace{1cm}
+\hfill (Signature of Guide)
+
+% Acknowledgement Page
+\newpage
+\begin{center}
+    \vspace*{2cm}
+    \Large\textbf{ACKNOWLEDGEMENT}
+\end{center}
+
+\vspace{1cm}
+\noindent
+\textbf{Note: Acknowledgement should be written by students in their own language. This should include the name of all the people (faculty, friends, guide etc) who you think have contributed to your project/ influenced your work!}
+
+\newpage
+
+\begin{center}
+\ \vspace*{2cm}
+  {\fontsize{14pt}{16.8pt}\selectfont \textbf{CONTENTS}} % 
+\end{center}
+
+\noindent\justify % Apply justified alignment to the entire block
+{\fontsize{12pt}{14.4pt}\selectfont 
+\begin{tabular}{p{0.94\textwidth}r} 
+Certificate & \textit{i} \\
+Acknowledgment & \textit{ii} \\
+Abstract & \textit{iii} \\
+List of Figures & \textit{iv} \\
+List of Tables & \textit{v} \\
+\hspace{\indentlen}
+{\fontsize{13pt}{15.6pt}\selectfont \textbf{Chapter 1 \quad Introduction}} & {\fontsize{13pt}{15.6pt}\selectfont \textbf{1}} \\
+\hspace{50\indentlen} 1.1 Introduction of the Company & 2\\
+\hspace{59\indentlen} 1.1.2 Quality Policy  & 2 \\
+\hspace{50\indentlen} 1.1.3 Communication& 2 \\
+\hspace{59\indentlen} 1.1.4 Resources & 2 \\
+\hspace{59\indentlen} 1.2.2 Objective and Purpose & 2 \\
+\hspace{59\indentlen} 1.2.3 About present system & 2 \\
+\hspace{59\indentlen} 1.2.4 Proposed system & 3 \\
+\hspace{50\indentlen} 1.3 PROJECT PROFILE & 5 \\
+\hspace{59\indentlen} 1.3.1 Project title & 5 \\
+\hspace{59\indentlen} 1.3.2 Scope of the project. & 5 \\
+\hspace{59\indentlen} 1.3.3 Project team. & 6 \\
+\hspace{59\indentlen} 1.3.4 Hardware/Software environment in the company. & 6 \\
+\hspace{\indentlen}
+{\fontsize{13pt}{15.6pt}\selectfont \textbf{Chapter 2 \quad System Analysis}} & {\fontsize{13pt}{15.6pt}\selectfont \textbf{}} \\
+\hspace{50\indentlen} 2.1 FEASIBILITY STUDY. & \textbf{} \\
+\hspace{59\indentlen} 2.1.1 Operational Feasibility. & \textbf{} \\
+\hspace{59\indentlen} 2.1.2 Technical Feasibility. & \textbf{} \\
+\hspace{59\indentlen} 2.1.3 Financial and economic feasibility. \\
+\hspace{50\indentlen} 2.2 REQUIREMENT ANALYSIS.  \\
+\hspace{59\indentlen} 2.2.1 Facts-Finding Techniques. \\
+\hspace{68\indentlen} 2.2.1.1 Interview. \\
+\end{tabular}
+
+}
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{plain}
+\newpage
+\thispagestyle{plain} % Optional: remove header/footer
+\setcounter{chapter}{1}
+\vspace*{\fill} % Push down
+\begin{center}
+    {\Huge\textbf{Chapter 1} }\\[1.5ex]
+    {\LARGE\textbf{Introduction}}
+\end{center}
+\vspace*{\fill} % Push up
+\newpage
+
+
+\section{About the Company}
+
+\subsection{Introduction of the Bluexkye}
+Bluexkye is an emerging IT company founded in 2020 and headquartered in Ahmedabad, Gujarat. With a strong focus on innovation and excellence, the company specializes in web development, custom software solutions, digital marketing, and artificial intelligence. Bluexkye is especially known for its flagship products like 16Score—an esports analytics platform—and its integration of ONDEWO AI for conversational automation. With a team of passionate developers, designers, and engineers, Bluexkye is committed to creating impactful digital experiences.
+
+\subsection{Quality Policy}
+Bluexkye is committed to delivering high-quality software solutions that meet client expectations in terms of performance, usability, and scalability. The company follows industry best practices in coding, testing, and deployment to ensure that its products are robust, reliable, and secure. Quality assurance is embedded throughout the development lifecycle, with a dedicated QA team ensuring compliance with standards and timely delivery.
+
+Key aspects of the quality policy include:
+\begin{itemize}
+    \item Continuous improvement through regular reviews and feedback
+    \item Use of automated and manual testing strategies
+    \item Adherence to coding standards and documentation practices
+    \item Client-focused development with user satisfaction as a priority
+\end{itemize}
+
+\subsection{Communication}
+Effective communication is central to Bluexkye’s operations. Internally, teams use tools like Slack, Microsoft Teams, and Jira to collaborate on tasks and track progress. Regular stand-up meetings, sprint reviews, and retrospectives are conducted to ensure transparency and alignment across departments.
+
+\subsection{Resources}
+Bluexkye utilizes a wide range of technological and human resources to deliver its services.\\ Human Resources
+Skilled developers (Angular, .NET Core, Python), UI/UX designers, QA engineers, AI specialists, and project managers.
+
+\newpage
+
+\section{The System}
+
+\subsection{Definition of the System}
+The system under development is an AI-Integrated Quiz Web Application designed to create an engaging, interactive, and intelligent platform for quiz-based learning and evaluation. This system allows users to take topic-specific and difficulty-based quizzes while providing detailed performance feedback generated through Gemini Generative AI APIs. It includes two main roles: Users who play quizzes, and Admins who manage content and configure quizzes. 
+
+The application is built using the MEAN stack — MongoDB, Express.js, Angular, and Node.js — and follows a modular, scalable architecture. It supports features like secure authentication, AI-powered question generation and explanation, quiz history tracking, and leaderboard rankings. 
+
+\subsection{Purpose and Objectives }
+The primary purpose of this system is to offer a smart, personalized, and automated quiz-taking experience that adapts to users’ learning levels and interests. By integrating AI capabilities, the system can dynamically generate questions and explanations, thereby reducing manual effort and enhancing learning outcomes. 
+\begin{itemize}
+    \item To develop a full-stack web application for quizzes using the MEAN stack. 
+
+    \item To provide users with quizzes based on selected topics and difficulty levels. 
+
+    \item To allow admins to manage quizzes through manual input, external APIs (OpenTDB), or AI-powered generation. 
+
+    \itemTo offer personalized feedback using AI, helping users understand their mistakes and improve. 
+
+    \item To maintain quiz history, user performance records, and leaderboard statistics. 
+
+    \item To implement a secure and role-based access system using JWT. 
+
+\end{itemize}
+
+\subsection{ About the Present System}
+Currently, most quiz platforms rely on static sets of questions, offering limited flexibility and minimal personalization. The present systems often: 
+
+\begin{itemize}
+    \item Lack adaptive quiz generation based on user preferences. 
+    \item Do not provide instant or intelligent feedback. 
+
+    \item Depend heavily on manual question entry and curation. 
+
+    \item Are limited in scope for dynamically generated content and explanations. 
+
+    \itemDon’t integrate with modern AI technologies to enhance learning experiences. 
+\end{itemize}
+These limitations result in a generic, one-size-fits-all experience, where users receive little to no insight into their mistakes and are not challenged based on their learning progress. 
+
+\subsection{Proposed System}
+The proposed \textbf{AI-Integrated Quiz Web Application} addresses the shortcomings of the present system by offering the following features:
+
+\begin{itemize}
+    \item \textbf{AI-Generated Questions and Explanations:} \\
+    Utilizing \textbf{Gemini Generative AI}, the system can automatically generate quiz questions and provide detailed, AI-driven explanations for user responses.
+    
+    \item \textbf{Dynamic Quiz Generation:} \\
+    Users can customize their quiz experience by selecting desired topics and difficulty levels. The system dynamically adapts and generates quizzes accordingly.
+    
+    \item \textbf{Multiple Quiz Modes:} \\
+    Administrators have flexibility in quiz creation --- they can:
+    \begin{itemize}
+        \item Manually add questions
+        \item Import from \textbf{OpenTDB APIs}
+        \item Use AI to generate entire quizzes automatically
+    \end{itemize}
+    
+    \item \textbf{User and Admin Dashboards:} \\
+    \begin{itemize}
+        \item \textbf{Users:} Access dashboards to play quizzes, view history, and track progress.
+        \item \textbf{Admins:} Manage users, questions, and quizzes efficiently from their dedicated dashboard.
+    \end{itemize}
+    
+    \item \textbf{Secure Login \& Role Management:} \\
+    Authentication and authorization are handled using \textbf{JWT (JSON Web Token)}, ensuring secure access with role-based controls.
+    
+    \item \textbf{Leaderboard and Performance Tracking:} \\
+    Users can view their ranks, performance analytics, and quiz history to track improvement over time.
+    
+    \item \textbf{Modern Frontend with Angular:} \\
+    Built with \textbf{Angular 19}, using \textbf{standalone components} and \textbf{Tailwind CSS} for a responsive, clean, and modern user interface.
+\end{itemize}
+
+This intelligent system not only automates quiz creation and evaluation but also significantly \textbf{enhances user engagement} through AI-powered personalization --- delivering a smarter and more scalable approach to quiz-based assessments.
+
+\end{document}

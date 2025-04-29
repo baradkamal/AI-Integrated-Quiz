@@ -35,12 +35,12 @@ export class QuestionService {
   }
   
 
-  fetchQuestionAdmin(category: string, difficulty: string): Observable<any[]> {
+  fetchQuestionAdmin(category: string, difficulty: string): Observable<any> {
     const params = new HttpParams()
       .set('category', category)
       .set('difficulty', difficulty);
   
-    return this.http.get<any[]>(`${this.apiUrl}questionadmin`, { params });
+    return this.http.get<any>(`${this.apiUrl}questionadmin`, { params });
   }
   
  

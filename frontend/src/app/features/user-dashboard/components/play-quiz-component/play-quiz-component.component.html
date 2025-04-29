@@ -1,34 +1,100 @@
-<div class="quiz-modal">
-  <h2>{{ quizData.title }}</h2>
-  <p><strong>Category:</strong> {{ quizData.category.name }}</p>
-  <p><strong>Difficulty:</strong> {{ quizData.difficulty.name }}</p>
-  
-  <div *ngIf="!showResult">
-    <!-- <p><strong>Time Left:</strong> {{ timeLeft }}s</p> -->
-    <p><strong>Question {{ currentQuestionIndex() + 1 }}:</strong></p>
-    <p>{{ quizData.questions[currentQuestionIndex()].question }}</p>
-    
-    <div>
-      @for (option of getCurrentOptions(); track option.id) {
-        <label class="option-label">
-          <input 
-            type="radio" 
-            [name]="'question-' + currentQuestionIndex()" 
-            [value]="option.text"
-            [checked]="isAnswerSelected(option.text)"
-            (change)="selectAnswer(option.text)"
-          />
-          {{ option.text }}
-        </label>
-      }
+<!-- play-quiz-component.component.html -->
+<div class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50 backdrop-blur-sm ">
+  <div class="max-w-3xl w-full mx-4 my-8 overflow-auto max-h-screen">
+    <!-- Quiz Header -->
+    <div class="bg-white rounded-t-lg shadow-sm p-6">
+      <h2 class="text-2xl font-bold text-gray-900">{{ quizData.title }}</h2>
+      
+      <div class="flex items-center mt-3 space-x-3">
+        <span class="px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded">{{ quizData.category.name }}</span>
+        <span class="px-3 py-1 text-sm font-medium bg-purple-100 text-purple-800 rounded">{{ quizData.difficulty.name }}</span>
+      </div>
     </div>
     
-    <button (click)="nextQuestion()" [disabled]="!currentQuestion || !selectedAnswers()[currentQuestion._id]">Next</button>
-  </div>
-  
-  <div *ngIf="showResult">
-    <h3>Your Score: {{ score() }} / {{ quizData.questions.length }}</h3>
-    <button (click)="restartQuiz()">Restart</button>
-    <button (click)="close()">Close</button>
+    <!-- Quiz Content -->
+    <div class="bg-white" *ngIf="!showResult">
+      <!-- Progress Bar -->
+      <div class="w-full bg-gray-200 h-2">
+        <div class="bg-blue-600 h-2" [style.width]="progress + '%'"></div>
+      </div>
+      
+      <div class="p-6">
+        <!-- Question -->
+        <div class="mb-8">
+          <p class="text-sm font-medium text-gray-500 mb-2">Question {{ currentQuestionIndex() + 1 }} of {{ quizData.questions.length }}</p>
+          <p class="text-xl font-medium text-gray-900">{{ currentQuestion.question }}</p>
+        </div>
+        
+        <!-- Options -->
+        <div class="space-y-4 mb-8">
+          <ng-container *ngIf="getCurrentOptions()">
+            <label *ngFor="let option of getCurrentOptions()" 
+                  class="block w-full p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                  [class.bg-blue-50]="isAnswerSelected(option.text)" 
+                  [class.border-blue-300]="isAnswerSelected(option.text)">
+              <div class="flex items-center">
+                <input
+                  type="radio"
+                  [name]="'question-' + currentQuestionIndex()"
+                  [value]="option.text"
+                  [checked]="isAnswerSelected(option.text)"
+                  (change)="selectAnswer(option.text)"
+                  class="h-5 w-5 text-blue-600 focus:ring-blue-500"
+                />
+                <span class="ml-3 text-gray-800 text-lg">{{ option.text }}</span>
+              </div>
+            </label>
+          </ng-container>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between pt-4">
+          <button 
+            *ngIf="currentQuestionIndex() > 0"
+            (click)="previousQuestion()" 
+            class="bg-gray-200 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-300 transition-colors"
+          >
+            Previous
+          </button>
+          <div *ngIf="currentQuestionIndex() === 0"></div>
+          
+          <button 
+            (click)="nextQuestion()" 
+            [disabled]="!currentQuestion || !selectedAnswers()[currentQuestion._id]"
+            class="bg-blue-600 text-white py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:text-gray-700 disabled:cursor-not-allowed"
+          >
+            {{ isLastQuestion() ? 'Finish Quiz' : 'Next Question' }}
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Results Page -->
+    <div class="bg-white rounded-b-lg shadow-sm p-8" *ngIf="showResult">
+      <div class="text-center">
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Quiz Complete!</h3>
+        <p class="text-gray-600 mb-6">You've finished the quiz. Here's how you did:</p>
+        
+        <div class="mb-8">
+          <p class="text-4xl font-bold text-blue-600">{{ score() }} / {{ quizData.questions.length }}</p>
+          <p class="text-gray-600">{{ (score() / quizData.questions.length) * 100 }}% score</p>
+        </div>
+        
+        <div class="flex justify-center space-x-4">
+          <button 
+            (click)="restartQuiz()"
+            class="bg-blue-600 text-white py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Try Again
+          </button>
+          <button 
+            (click)="close()"
+            class="bg-gray-200 text-gray-800 py-3 px-8 rounded-lg hover:bg-gray-300 transition-colors"
+          >
+            Close Quiz
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

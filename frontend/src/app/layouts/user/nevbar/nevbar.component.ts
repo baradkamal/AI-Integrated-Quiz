@@ -4,6 +4,7 @@ import { ImageUrlService } from '../../../core/services/image-url.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-nevbar',
@@ -16,7 +17,7 @@ export class NevbarComponent implements OnInit {
   isUserPanelVisible: boolean = false;
   userId: string | null = null;
   userName: string = '';
-  profileImage: string = '/assets/images/default-profile.png'; // Default image
+  profileImage: string = environment.defaultProfileImage;
 
   constructor(
     private eRef: ElementRef,
@@ -72,7 +73,7 @@ export class NevbarComponent implements OnInit {
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
     if (img) {
-      img.src = '/assets/images/default-profile.png';
+      img.src = environment.defaultProfileImage;
     }
   }
 }

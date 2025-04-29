@@ -56,6 +56,7 @@ export class PlayQuizComponentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log(this.quizData)
     if (!this.quizData) {
       console.error('No quiz data provided');
       return;
@@ -135,12 +136,14 @@ export class PlayQuizComponentComponent implements OnInit, OnDestroy {
     const responses: UserAnswer[] = this.quizData.questions.map(question => {
       const userAnswer = this.selectedAnswers()[question._id] || '';
       const isCorrect = userAnswer === question.correct_answer;
+      const correctAnswer = question.correct_answer;
       const points = isCorrect ? 1 : 0;
 
       return {
         question: question._id,
         userAnswer,
         isCorrect,
+        correctAnswer,
         points
       };
     });
@@ -156,12 +159,10 @@ export class PlayQuizComponentComponent implements OnInit, OnDestroy {
       completedAt: new Date().toISOString()
     };
 
-    // Log the response data for debugging
-    console.log('Submitting quiz response:', quizResponse);
 
     this.quizService.submitQuizResponse(quizResponse).subscribe({
       next: (response) => {
-        console.log('Quiz response submitted successfully:', response);
+        
         this.score.set(totalScore);
         this.quizCompleted.set(true);
         this.showResult = true;

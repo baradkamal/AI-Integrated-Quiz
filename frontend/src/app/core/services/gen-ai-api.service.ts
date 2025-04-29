@@ -11,8 +11,8 @@ export class GenAiApiService {
   constructor(private http: HttpClient) {}
 
   // Review answer using GenAI
-  reviewAnswer(answer: string, question: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}genaireviewanswer`, { answer, question });
+  reviewAnswer(correctAnswer: string, question: string, userAnswer: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}genaireviewanswer`, { correctAnswer, question, userAnswer });
   }
 
   // Create question using GenAI
@@ -35,10 +35,13 @@ export class GenAiApiService {
   }
 
   // Create quiz from text using GenAI
-  createQuizFromText(text: string, numberOfQuestions: number): Observable<any> {
+  createQuizFromText(Difficulty: string, Category: string, Type: string, text: string, Nofqustation: number): Observable<any> {
     return this.http.post(`${this.apiUrl}genaiquizfromtext`, { 
+      Difficulty, 
+      Category, 
+      Type, 
       text, 
-      numberOfQuestions 
+      Nofqustation  
     });
   }
 

@@ -32,6 +32,7 @@ export class CreateNewQuestionsComponent implements OnInit {
     "incorrect_answers": ["", "", ""] 
   };
   showPopup = false;
+  isloading = false;
 
   constructor(
     private openTriviaService: OpenTriviaService,
@@ -51,10 +52,10 @@ export class CreateNewQuestionsComponent implements OnInit {
     this.showPopup = true;
   }
 
-  // Method to check if an answer is duplicated
+  
   isDuplicateAnswer(index: number): boolean {
     if (index === -1) {
-      // Checking correct answer against incorrect answers
+      
       const correctAnswer = this.Questionobj.correct_answer?.toLowerCase().trim();
       if (!correctAnswer) return false;
       
@@ -175,7 +176,8 @@ export class CreateNewQuestionsComponent implements OnInit {
   }
 
   GetGenaiquestation() {
-    // Check if any of the required inputs are not provided
+    this.isloading= true;
+    
     if (!this.selectedCategory || !this.numberofquestation || !this.selectedType || !this.selecteddifficulty) {
         alert("Please select all 4 inputs.");
         return;
@@ -206,7 +208,11 @@ export class CreateNewQuestionsComponent implements OnInit {
             console.error("Error generating questions:", error);
             alert("Failed to generate questions. Please try again.");
         }
-    });
+        
+    }).add(() => {
+      // This is similar to finally, but in RxJS
+      this.isloading = false;
+  });
 }
 
 

@@ -29,6 +29,10 @@ export class QuizServiceService {
     return this.http.get<any[]>(this.getquizurladmin);
   }
 
+  fetchquizzesuser(category:any,difficulty:any,): Observable<any[]> {
+    return this.http.get<any>(`${this.apiUrl}/Advancequizuser?category=${category}&difficulty=${difficulty}`)
+  }
+
   fetchQuizzesadmin(page: number = 1, limit: number = 10): Observable<QuizResponse> {
     return this.http.get<QuizResponse>(`${this.getquizurl}?page=${page}&limit=${limit}`);
   }

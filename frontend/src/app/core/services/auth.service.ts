@@ -30,15 +30,24 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token'); // Remove token on logout
-    // this.router.navigate(['/login']); // Redirect to login
+    // Clear all auth-related data
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('user_email');
+    localStorage.removeItem('admin');
+    
+    // Clear signals
+    this.authToken.set(null);
+    this.user_id.set(null);
+    this.user_email.set(null);
   } 
+
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token'); 
+    return !!localStorage.getItem('authToken');
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token'); 
+    return localStorage.getItem('authToken');
   }
 setId(id: any){
   this.user_id.set(id);

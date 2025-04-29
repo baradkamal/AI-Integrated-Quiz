@@ -9,7 +9,6 @@ exports.reviewAnswer = async (req, res) => {
       .json({ error: "question, correctAnswer and userAnswer are required" });
   }
 
-  // 🧠 Prompt with strict JSON response instruction
   const prompt = `
 You are a quiz evaluator bot. I will give you:
 - a question
@@ -18,43 +17,47 @@ You are a quiz evaluator bot. I will give you:
 
 Your task:
 1. Compare the user's answer to the correct one
-2. Tell whether it's correct or not
-3. Give 2-4 bullet points explaining why
-4. Write a short summary
-5. Output STRICTLY in this JSON format (no text outside JSON):
+2. Tell whether it's correct or not (true/false)
+3. Generate an explanation in a frontend-friendly structure with:
+   - a summary
+   - 3-5 sections (each with a title and short content)
+   - relatedConcepts as an array of keywords
+
+⚠️ Output STRICTLY in this JSON format (no text outside JSON):
 
 {
   "isCorrect": [true or false],
-  "points": ["point 1", "point 2", "point 3"],
-  "summary": "short summary"
+  "explanation": {
+    "summary": "",
+    "sections": [
+      { "title": "", "content": "" },
+      { "title": "", "content": "" }
+    ],
+    "relatedConcepts": ["", ""]
+  }
 }
 
 Here is the data:
 
 Question: ${question}  
 Correct Answer: ${correctAnswer}  
-User's Answer: ${userAnswer}  
+User's Answer: ${userAnswer}
 
-⚠️ IMPORTANT: Return ONLY valid JSON — no markdown, no backticks, no extra explanation. Just clean raw JSON.
-  `;
+⚠️ IMPORTANT: Return ONLY valid JSON — no markdown, no backticks, no extra explanation.
+`;
 
   try {
     const result = await generateContent(prompt);
 
-    // 🧼 Clean and parse the AI response
     let cleaned = result.trim();
 
-    // Remove markdown-style code blocks if present
+    // Clean any accidental markdown code blocks
     if (cleaned.startsWith("```json")) {
-      cleaned = cleaned
-        .replace(/```json/, "")
-        .replace(/```/, "")
-        .trim();
+      cleaned = cleaned.replace(/```json/, "").replace(/```/, "").trim();
     } else if (cleaned.startsWith("```")) {
       cleaned = cleaned.replace(/```/, "").replace(/```/, "").trim();
     }
 
-    // Try parsing JSON
     const jsonResponse = JSON.parse(cleaned);
     res.status(200).json(jsonResponse);
   } catch (error) {
@@ -65,6 +68,7 @@ User's Answer: ${userAnswer}
     });
   }
 };
+
 
 
 exports.createQuestation = async (req, res) => {
@@ -179,51 +183,57 @@ Return ONLY an array of questions in valid JSON like this:
 };
 
 exports.createquizfromtext = async (req, res) => {
-    const { Difficulty, Category, Nofqustation, Type, text } = req.body;
+  const { Difficulty, Category, Nofqustation, Type, text } = req.body;
 
   if (!Difficulty || !Category || !Nofqustation || !Type || !text) {
     return res.status(400).json({
       error: "Difficulty, Category, Nofqustation, Type, and text are required"
     });
   }
+
   const prompt = `
-You are a quiz generator AI.
-
-Based on the following study material/text, generate ${Nofqustation} multiple choice questions.
-
-Study Text:
-""" 
-${text} 
-"""
-
-Category: ${Category}
-Difficulty: ${Difficulty}
-Type: ${Type} (e.g., MCQ)
-
-Each question must include:
-- question (string)
-- options (array of 4 strings)
-- answer (correct option from the options)
-- explanation (brief explanation of the correct answer)
-
-Return ONLY an array of questions in valid JSON like this:
-
-[
+  You are a quiz generator AI.
+  
+  Based on the following study material/text, generate a quiz with:
+  
+  - A creative and relevant title (string)
+  - A one-line description summarizing the topic (string)
+  - A category (use: "${Category}")
+  - A difficulty level (use: "${Difficulty}")
+  - A list of ${Nofqustation} multiple choice questions, each with:
+    - question (string)
+    - options (array of 4 strings)
+    - answer (the correct option from the options)
+    - explanation (brief explanation of the correct answer)
+  
+  Study Text:
+  """
+  ${text}
+  """
+  
+  Return ONLY a valid JSON object in the following format:
+  
   {
-    "question": "string",
-    "options": ["A", "B", "C", "D"],
-    "answer": "A",
-    "explanation": "short explanation"
-  },
-  ...
-]
+    "title": "string",
+    "description": "string",
+    "category": "${Category}",
+    "difficulty": "${Difficulty}",
+    "questions": [
+      {
+        "question": "string",
+        "options": ["A", "B", "C", "D"],
+        "answer": "A",
+        "explanation": "short explanation"
+      }
+    ]
+  }
+  
+  ⚠️ IMPORTANT: Respond with ONLY valid JSON — no markdown, no code block, no extra explanation.
+  `;
 
-⚠️IMPORTANT: Respond with ONLY valid JSON — no markdown, no code block, no extra explanation.
-`;
-try {
+  try {
     const result = await generateContent(prompt);
 
-    
     let cleaned = result.trim();
     if (cleaned.startsWith("```json")) {
       cleaned = cleaned.replace(/```json/, '').replace(/```/, '').trim();
@@ -231,8 +241,14 @@ try {
       cleaned = cleaned.replace(/```/, '').replace(/```/, '').trim();
     }
 
-    const quizData = JSON.parse(cleaned);
-    res.status(200).json(quizData);
+    const quizObject = JSON.parse(cleaned);
+
+    // Optionally: Validate that it contains the correct structure
+    if (!quizObject.questions || !Array.isArray(quizObject.questions)) {
+      throw new Error("Invalid quiz format received from AI");
+    }
+
+    res.status(200).json(quizObject);
 
   } catch (error) {
     console.error("Quiz generation failed:", error.message);

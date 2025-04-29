@@ -37,15 +37,16 @@ exports.userResponseByuser = async (req, res) =>{
             select: 'title _id',  
             populate: [
                 {
-                    path: 'category',  // Populate the category field inside quiz
-                    select: 'name image -_id'  // Include name and image fields from the Category model
+                    path: 'category',  
+                    select: 'name image -_id' 
                 },
                 {
-                    path: 'difficulty',  // Populate the difficulty field inside quiz
-                    select: 'name -_id'  // Include name and description fields from the Difficulty model
+                    path: 'difficulty',  
+                    select: 'name -_id' 
                 }
             ]
-        });
+        },)
+        .populate("responses.question", "question  -_id");
 
         if (!userresponse || userresponse.length === 0) {
             return res.status(404).json({ message: "No user response found" });
@@ -63,6 +64,10 @@ exports.createUserResponse = async (req, res) => {
     const { user, quiz, responses, totalScore } = req.body;
   
     try {
+        // First, check if there's an existing response for this user and quiz
+        await UserResponse.findOneAndDelete({ user, quiz });
+
+        // Create new response
         const userResponse = await UserResponse.create({ 
             user, 
             quiz, 

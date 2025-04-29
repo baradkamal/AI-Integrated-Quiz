@@ -12,9 +12,12 @@ export interface UserResponse {
     };
   };
   responses: Array<{
-    question: string;
+    question: {
+      question: string;
+    };
     userAnswer: string;
     isCorrect: boolean;
+    correctAnswer: string;
     points: number;
     _id: string;
   }>;

@@ -14,6 +14,41 @@ exports.createAdvanceQuiz = async (req, res) => {
     }
 };
 
+exports.getAllAdvanceQuizzesUser = async (req, res) => {
+    try {
+        const filter = {
+            // Add default filter for active status
+            status: 'active'
+        };
+        
+        // Add category filter if provided in query params
+        if (req.query.category) {
+            filter.category = req.query.category;
+        }
+        
+        // Add difficulty filter if provided in query params
+        if (req.query.difficulty) {
+            filter.difficulty = req.query.difficulty;
+        }
+        
+        // Apply the filters to the query
+        const quizzes = await AdvanceQuiz.find(filter)
+            .populate("questions", "question correct_answer incorrect_answers type _id")
+            .populate("category", "name -_id")
+            .populate("difficulty", "name -_id")
+            .populate("createdBy", "name -_id");
+        
+        res.status(200).json(quizzes);
+    } catch (error) {
+        console.error('Quiz Fetch Error:', error);
+        res.status(500).json({ 
+            message: "Error fetching quizzes", 
+            error: error.message 
+        });
+    }
+};
+
+
 
 exports.getAllAdvanceQuizzes = async (req, res) => {
     try {

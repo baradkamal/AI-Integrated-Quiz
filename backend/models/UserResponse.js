@@ -26,6 +26,10 @@ const userResponseSchema = new mongoose.Schema({
             type: Boolean,
             default: false
         },
+        correctAnswer: {
+            type: String,
+            trim: true
+        },
         points: {
             type: Number,
             default: 0

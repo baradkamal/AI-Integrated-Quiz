@@ -49,7 +49,11 @@ export class ManageQuizzesComponent implements OnInit {
     this.fetchQuiz();
     this.fetchquestation();
   }
-
+  activeDiv = 'form1'; 
+  
+  toggleDiv() {
+    this.activeDiv = this.activeDiv === 'form1' ? 'form2' : 'form1';
+  }
   openDialog(title: string, message: string, type: 'delete' | 'status' | 'view' | 'edit', quiz?: Quiz) {
     this.dialogTitle = title;
     this.dialogMessage = message;
