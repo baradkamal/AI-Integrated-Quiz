@@ -11,6 +11,7 @@ const category = require("./routes/categoryRoutes");
 const difficulty = require("./routes/difficultyRoutes");
 const dashboard = require("./routes/deshboardRoutes");
 const errorHandler = require("./middlewares/errorMiddleware");
+const ocr = require("./routes/ocrRoutes");
 const cors = require("cors");
 
 
@@ -36,8 +37,7 @@ app.use("/api", category);
 app.use("/api", difficulty);
 app.use("/api", genai);
 app.use("/api", dashboard);
-
-
+app.use("/api", ocr);
 
 app.use(errorHandler);
 
